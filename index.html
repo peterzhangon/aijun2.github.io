@@ -21,8 +21,8 @@
       // With d3.csv
       d3.csv(csvUrl).then(data => {
         let message = 'peter: \n';
-		console.log(data);
-        message = message + Math.round(d3.csvFormat(data).length / 1024) + ' kB\n';
+	console.log(data);
+        message = message + Math.round(d3.csvFormat(data).length / 1024) + ' peter kB\n';
         message = message + data.length + ' rows\n';
         message = message + data.columns.length + ' columns';
         document.getElementById('message-container').textContent = message;
