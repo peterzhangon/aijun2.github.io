@@ -1,0 +1,20 @@
+import pandas as pd
+df = pd.read_csv ('C:\\peter\\book\\dv\\project\\us-states.csv')
+df[["Total Cases", "Total Deaths"]] = 0
+my_dict = {}
+m = len(df)
+#m = 4
+for i in range(m):
+    my_dict[df.loc[i].at['state']] = i
+print(my_dict.values())
+set = my_dict.values()
+for key, idx in my_dict.items():
+    i = idx
+    print(key, i)
+    print("i: ", i, "State:", df.loc[i].at['state'], df.loc[i].at['cases'], df.loc[i].at['deaths'])
+    df.loc[i, 'Total Cases'] = df.loc[i].at['cases']
+    df.loc[i, 'Total Deaths'] = df.loc[i].at['deaths']
+print(my_dict)
+print("lenth: ", len(df))
+print(df.tail())
+df.to_csv ('C:\\peter\\book\\dv\\project\\us-states-new.csv', index=False)
