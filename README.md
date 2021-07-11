@@ -38,3 +38,8 @@ li + tab
 a + tab
 
 ! + tab
+
+## Generate different colors for all the states
+
+https://jnnnnn.blogspot.com/2017/02/distinct-colours-2.html
+
