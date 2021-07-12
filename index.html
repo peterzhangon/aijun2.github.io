@@ -25,7 +25,125 @@
             if (isCases) {
                 div_pos = "mul_line_left";
             } else {
-                div_pos = "mul_line_right";
+                div_pos = "mul_line_left"; /// We just append
+            }
+
+            // set the dimensions and margins of the graph
+            var margin = {top: 10, right: 30, bottom: 30, left: 60},
+                width = 460 - margin.left - margin.right,
+                height = 400 - margin.top - margin.bottom;
+
+            // append the svg object to the body of the page
+            var svg = d3.select("#" + div_pos)
+              .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+              .append("g")
+                .attr("transform",
+                      "translate(" + margin.left + "," + margin.top + ")");
+
+            // Read the data
+            d3.csv("data/us-states-trend.csv", function(data) {
+
+              var parseTime = d3.timeParse("%Y/%m/%d");
+
+              data.forEach(function(d) {
+                  d.date = parseTime(d.date);
+                });
+
+              // group the data: I want to draw one line per group
+              var sumstat = d3.nest() // nest function allows to group the calculation per level of a factor
+                .key(function(d) { return d.state;})
+                .entries(data);
+
+              // Add X axis --> it is a date format
+              var x = d3.scaleLinear()
+                .domain(d3.extent(data, function(d) { return d.date; }))
+                .range([ 0, width ]);
+
+              svg.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%Y-%m")))
+
+              // Add Y axis
+              var y = d3.scaleLinear()
+                .domain([0, d3.max(data, function(d) {if(isCases)
+	    		                                      {
+	    											      return +d.cases;
+	    											  }
+	    		                                      else {
+	    											      return +d.deaths;
+	    											  }})])
+                .range([ height, 0 ]);
+
+              svg.append("g")
+                .call(d3.axisLeft(y));
+
+              // color palette
+              var res = sumstat.map(function(d){ return d.key }) // list of group names
+
+              var color = d3.scaleOrdinal()
+                .domain(res)
+                .range(["#1b70fc", "#faff16", "#d50527", "#158940", "#f898fd", "#24c9d7", "#cb9b64", "#866888",
+                "#22e67a", "#e509ae", "#9dabfa", "#437e8a", "#b21bff", "#ff7b91", "#94aa05", "#ac5906", "#82a68d", "#fe6616",
+                "#7a7352", "#f9bc0f", "#b65d66", "#07a2e6", "#c091ae", "#8a91a7", "#88fc07", "#ea42fe", "#9e8010", "#10b437",
+                "#c281fe", "#f92b75", "#07c99d", "#a946aa", "#bfd544", "#16977e", "#ff6ac8", "#a88178", "#5776a9", "#678007",
+                "#fa9316", "#85c070", "#6aa2a9", "#989e5d", "#fe9169", "#cd714a", "#6ed014", "#c5639c", "#c23271", "#698ffc",
+                "#678275", "#c5a121", "#a978ba", "#ee534e", "#d24506", "#59c3fa", "#ca7b0a", "#6f7385", "#9a634a", "#48aa6f",
+                "#ad9ad0", "#d7908c", "#6a8a53", "#8c46fc", "#8f5ab8", "#fd1105", "#7ea7cf", "#d77cd1", "#a9804b", "#0688b4",
+                "#6a9f3e", "#ee8fba", "#a67389", "#9e8cfe", "#bd443c", "#6d63ff", "#d110d5", "#798cc3", "#df5f83", "#b1b853",
+                "#bb59d8", "#1d960c", "#867ba8", "#18acc9", "#25b3a7", "#f3db1d", "#938c6d", "#936a24", "#a964fb", "#92e460",
+                "#a05787", "#9c87a0", "#20c773", "#8b696d", "#78762d", "#e154c6", "#40835f", "#d73656", "#1afd5c", "#c4f546",
+                "#3d88d8", "#bd3896", "#1397a3", "#f940a5", "#66aeff", "#d097e7", "#fe6ef9", "#d86507", "#8b900a", "#d47270",
+                "#e8ac48", "#cf7c97", "#cebb11", "#718a90", "#e78139", "#ff7463", "#bea1fd"])
+
+              // Draw the line
+              svg.selectAll(".line")
+                  .data(sumstat)
+                  .enter()
+                  .append("path")
+                    .attr("fill", "none")
+                    .attr("stroke", function(d){ return color(d.key) })
+                    .attr("stroke-width", 1.5)
+                    .attr("d", function(d){
+                      return d3.line()
+                        .x(function(d) { return x(d.date); })
+                        .y(function(d) {if (isCases)
+	    				                {
+	    								    return y(+d.cases);
+	    							    }
+	    				                else {
+	    								    return y(+d.deaths);
+	    								}})
+                        (d.values)
+                    })
+            })
+        }
+        mul_lines_func(false)
+        mul_lines_func(true)
+
+        document.getElementById("mul_lines").style.display = 'none';
+        document.getElementById("mul_lines").style.display = 'block';
+        </script>
+    </section>
+
+    <section class="" id="mul_bars">
+        <pre id="message-container"></pre>
+
+        <!-- Load d3.js -->
+        <script src="https://d3js.org/d3.v4.js"></script>
+
+        <!-- Create a div where the graph will take place -->
+        <div id="mul_bars_left"></div>
+        <div id="mul_line_right"></div>
+
+        <script>
+        function mul_lines_func (isCases) {
+            var div_pos = "";
+            if (isCases) {
+                div_pos = "mul_bars_left";
+            } else {
+                div_pos = "mul_bars_left";
             }
 
             // set the dimensions and margins of the graph
