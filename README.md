@@ -44,7 +44,12 @@ a + tab
 https://jnnnnn.blogspot.com/2017/02/distinct-colours-2.html
 
 
-## Date formatter
+
+## Multiple lines
+
+https://www.d3-graph-gallery.com/graph/line_several_group.html
+
+https://bl.ocks.org/larsenmtl/e3b8b7c2ca4787f77d78f58d41c3da91
 
 yyyy-mm-dd on x axis.
 
