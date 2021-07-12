@@ -43,3 +43,10 @@ a + tab
 
 https://jnnnnn.blogspot.com/2017/02/distinct-colours-2.html
 
+
+## Date formatter
+
+yyyy-mm-dd on x axis.
+
+https://bl.ocks.org/d3noob/0e276dc70bb9184727ee47d6dd06e915
+
