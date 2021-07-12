@@ -55,3 +55,11 @@ yyyy-mm-dd on x axis.
 
 https://bl.ocks.org/d3noob/0e276dc70bb9184727ee47d6dd06e915
 
+## Multiple bars
+
+https://observablehq.com/@d3/sortable-bar-chart
+
+https://www.d3-graph-gallery.com/graph/barplot_grouped_basicWide.html
+
+
+
