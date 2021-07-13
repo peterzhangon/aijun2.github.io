@@ -31,7 +31,9 @@
     <script src="https://d3js.org/d3.v4.js"></script>
 
     <!-- Create a div where the graph will take place -->
+    <div id="tooltip_lines_left"></div> // TODO, tooltip not work yet
     <div id="mul_line_left"></div>
+    <div id="tooltip_lines_right"></div>
     <div id="mul_line_right"></div>
 
     <script>
@@ -46,10 +48,12 @@
       }
     }
     function mul_lines_func (isCases) {
-      var div_pos = "";
+      // TODO, tooltip not work yet
       if (isCases) {
+          pos_tooltip = "#tooltip_lines_left";
           div_pos = "mul_line_left";
       } else {
+          pos_tooltip = "#tooltip_lines_right";
           div_pos = "mul_line_right"; /// We just append
       }
 
@@ -130,7 +134,17 @@
                   .y(function(d) {return y(+get_d_val(isCases, d));})
                   (d.values)
               })
-      })
+              .on("mouseover", function(d,i) { // TODO, tooltip not work yet
+                d3.select(pos_tooltip).style("opacity", 1)
+                  .style("left",(d3.event.pageX)+"px")
+                  .style("top",(d3.event.pageY)+"px")
+                  .html("Item #: "+i+", state: " + d.state + ", cases: " + d.cases + ", deaths: " + d.deaths);
+              })
+             .on("mouseout", function() {
+                d3.select(pos_tooltip).style("opacity", 0)
+              })
+            })
+
     }
     mul_lines_func(false)
     mul_lines_func(true)
@@ -171,8 +185,8 @@
             }
           }
         function bars_func (isCases) {
-          var pos = "";
-          var pos_tooltip = "";
+          //var pos = "";
+          //var pos_tooltip = "";
           if(isCases)
           {
             pos_tooltip = "#tooltip_bar_left";
