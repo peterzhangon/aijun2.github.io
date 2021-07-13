@@ -61,5 +61,8 @@ https://observablehq.com/@d3/sortable-bar-chart
 
 https://www.d3-graph-gallery.com/graph/barplot_grouped_basicWide.html
 
+## map
+
+http://bl.ocks.org/lwhitaker3/e8090246a20d9515789b
 
 
