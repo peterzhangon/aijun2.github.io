@@ -1,4 +1,18 @@
 <!DOCTYPE html>
+
+<style>
+  .chart rect { fill: steelblue; }
+  #tooltip {
+  opacity: 0;
+  position: absolute;
+  text-align: center;
+  width: 60px; height: 40px;
+  background: white;
+  border: 0px;
+  }
+</style>
+
+
 <html>
   <head>
     <title>Covid-19 Cases and Deaths Trends</title>
@@ -9,6 +23,7 @@
     </style>
   </head>
   <body>
+
   <section class="" id="mul_lines">
     <pre id="message-container"></pre>
 
@@ -40,7 +55,7 @@
 
       // set the dimensions and margins of the graph
       var margin = {top: 10, right: 30, bottom: 30, left: 60},
-          width = 460 - margin.left - margin.right,
+          width = 860 - margin.left - margin.right,
           height = 400 - margin.top - margin.bottom;
 
       // append the svg object to the body of the page
@@ -125,6 +140,9 @@
     </script>
   </section>
 
+
+
+
   <section class="" id="mul_bars">
       <pre id="message-container"></pre>
 
@@ -132,9 +150,15 @@
       <script src="https://d3js.org/d3.v4.js"></script>
 
       <!-- Create a div where the graph will take place -->
+      <div id="tooltip_bar_left"></div>
       <div id="mul_bars_left"></div>
-      <div id="mul_line_right"></div>
+      <div id="tooltip_bar_right"></div>
+      <div id="mul_bars_right"></div>
+
+
       <script>
+
+
 
         function get_d_val(isCases, d) {
           if(isCases)
@@ -147,15 +171,18 @@
             }
           }
         function bars_func (isCases) {
-        var pos = "";
-        if(isCases)
-        {
-         var pos = "mul_bars_left";
-        }
-        else
-        {
-          var pos = "mul_bars_left";
-        }
+          var pos = "";
+          var pos_tooltip = "";
+          if(isCases)
+          {
+            pos_tooltip = "#tooltip_bar_left";
+            pos = "mul_bars_left";
+          }
+          else
+          {
+            pos_tooltip = "#tooltip_bar_right";
+            pos = "mul_bars_right";
+          }
 
         // set the dimensions and margins of the graph
         var margin = {top: 30, right: 30, bottom: 70, left: 60},
@@ -225,8 +252,19 @@
               .attr("width", x.bandwidth())
               .attr("height", d=> height - y(get_d_val(isCases, d)))
               .attr("fill", function(d){ return color(d.state) })
+              .on("mouseover", function(d,i) {
+                d3.select(pos_tooltip).style("opacity", 1)
+                  .style("left",(d3.event.pageX)+"px")
+                  .style("top",(d3.event.pageY)+"px")
+                  .html("Item #: "+i+", state: " + d.state + ", cases: " + d.cases + ", deaths: " + d.deaths);
+              })
+              .on("mouseout", function() {
+                d3.select(pos_tooltip).style("opacity", 0)
+              })
+
           })
       }
+
       bars_func(true);
       bars_func(false);
       </script>
