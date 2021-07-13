@@ -24,7 +24,9 @@
   </head>
   <body>
 
-  <section class="" id="mul_lines">
+  <section class="" id="section_mul_lines">
+    <H1>Page-3: Covid-19 Trends</H1>
+    <H2>Chart-1: Trends in cases</H2>
     <pre id="message-container"></pre>
 
     <!-- Load d3.js -->
@@ -33,6 +35,7 @@
     <!-- Create a div where the graph will take place -->
     <div id="tooltip_lines_left"></div> // TODO, tooltip not work yet
     <div id="mul_line_left"></div>
+    <H2>Chart-2: Trends in deaths</H2>
     <div id="tooltip_lines_right"></div>
     <div id="mul_line_right"></div>
 
@@ -149,15 +152,16 @@
     mul_lines_func(false)
     mul_lines_func(true)
 
-    document.getElementById("mul_lines").style.display = 'none';
-    document.getElementById("mul_lines").style.display = 'block';
+
     </script>
   </section>
 
 
 
 
-  <section class="" id="mul_bars">
+  <section class="" id="section_mul_bars">
+    <H1>Page-4: Cases comparison between states</H1>
+    <H2>Chart-1: Comparasion in cases</H2>
       <pre id="message-container"></pre>
 
       <!-- Load d3.js -->
@@ -166,13 +170,11 @@
       <!-- Create a div where the graph will take place -->
       <div id="tooltip_bar_left"></div>
       <div id="mul_bars_left"></div>
+      <H2>Chart-2: Comparasion in deaths</H2>
       <div id="tooltip_bar_right"></div>
       <div id="mul_bars_right"></div>
 
-
       <script>
-
-
 
         function get_d_val(isCases, d) {
           if(isCases)
@@ -281,6 +283,9 @@
 
       bars_func(true);
       bars_func(false);
+
+      //document.getElementById("section_mul_lines").style.display = 'none';
+      document.getElementById("section_mul_bars").style.display = 'block';
       </script>
    </section>
   </body>
