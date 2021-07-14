@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 
-<style>
-  .chart rect { fill: steelblue; }
-  #tooltip {
-  opacity: 0;
-  position: absolute;
-  text-align: center;
-  width: 60px; height: 40px;
-  background: white;
-  border: 0px;
-  }
-</style>
-
-
 <html>
+<link href='https://fonts.googleapis.com/css?family=Lato:300,900' rel='stylesheet' type='text/css'>
+
+<!-- import d3.v4 -->
+<script src="https://d3js.org/d3.v4.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function() {}
+
+</script>
+
   <head>
     <title>Covid-19 Cases and Deaths Trends</title>
     <style>
@@ -24,6 +21,8 @@
   </head>
   <body>
 
+  <!-- page 0: home page overview -->
+  <!-- ************************** -->
 
   <!-- page 1: multiple lines -->
   <!-- ************************** -->
@@ -32,11 +31,8 @@
     <H2>Chart-1: Trends in cases</H2>
     <pre id="message-container"></pre>
 
-    <!-- Load d3.js -->
-    <script src="https://d3js.org/d3.v4.js"></script>
-
     <!-- Create a div where the graph will take place -->
-    <div id="tooltip_lines_left"></div> // TODO, tooltip not work yet
+    <div id="tooltip_lines_left"></div>
     <div id="mul_line_left"></div>
     <H2>Chart-2: Trends in deaths</H2>
     <div id="tooltip_lines_right"></div>
@@ -168,9 +164,6 @@
     <H2>Chart-1: Comparasion in cases</H2>
       <pre id="message-container"></pre>
 
-      <!-- Load d3.js -->
-      <script src="https://d3js.org/d3.v4.js"></script>
-
       <!-- Create a div where the graph will take place -->
       <div id="tooltip_bar_left"></div>
       <div id="mul_bars_left"></div>
@@ -292,5 +285,198 @@
       document.getElementById("section_mul_bars").style.display = 'block';
       </script>
    </section>
+
+
+   <!-- page 3: a map -->
+   <!-- ************************** -->
+   <section class="" id="section_mul_maps">
+     <H1>Page-4: Choropleth Map with Tooltips</H1>
+     <H2>Chart-1: Compare based on cases</H2>
+       <pre id="message-container"></pre>
+
+       <!-- Create a div where the graph will take place -->
+       <div id="tooltip_map_left"></div>
+       <div id="mul_map_left"></div>
+       <H2>Chart-2: Compare based on deaths</H2>
+       <div id="tooltip_map_right"></div>
+       <div id="mul_map_right"></div>
+       <div id="tooltip"></div>
+
+       <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+
+       <script>
+       tmp_color = {
+         0: "#1b70fc",
+         1: "#faff16",
+         2: "#d50527",
+         3: "#158940",
+         4: "#f898fd",
+         5: "#24c9d7",
+         6: "#cb9b64",
+         7: "#866888",
+         8: "#22e67a",
+         9: "#e509ae",
+         10: "#9dabfa",
+         11: "#437e8a",
+         12: "#b21bff",
+         13: "#ff7b91",
+         14: "#94aa05",
+         15: "#ac5906",
+         16: "#82a68d",
+         17: "#fe6616",
+         18: "#7a7352",
+         19: "#f9bc0f",
+         20: "#b65d66",
+         21: "#07a2e6",
+         22: "#c091ae",
+         23: "#8a91a7",
+         24: "#88fc07",
+         25: "#ea42fe",
+         26: "#9e8010",
+         27: "#10b437",
+         28: "#c281fe",
+         29: "#f92b75",
+         30: "#07c99d",
+         31: "#a946aa",
+         32: "#bfd544",
+         33: "#16977e",
+         34: "#ff6ac8",
+         35: "#a88178",
+         36: "#5776a9",
+         37: "#678007",
+         38: "#fa9316",
+         39: "#85c070",
+         40: "#6aa2a9",
+         41: "#989e5d",
+         42: "#fe9169",
+         43: "#cd714a",
+         44: "#6ed014",
+         45: "#c5639c",
+         46: "#c23271",
+         47: "#698ffc",
+         48: "#678275",
+         49: "#c5a121",
+         50: "#a978ba",
+         51: "#ee534e",
+         52: "#d24506",
+         53: "#59c3fa",
+         54: "#ca7b0a",
+         55: "#6f7385"
+         };
+
+
+       function map_func (isCases) {
+         if(isCases)
+         {
+           pos_tooltip = "#tooltip_map_left";
+           pos = "#mul_map_left";
+         }
+         else
+         {
+           pos_tooltip = "#tooltip_map_right";
+           pos = "#mul_map_right";
+         }
+
+           // https://bl.ocks.org/wboykinm/dbbe50d1023f90d4e241712395c27fb3
+           var margin = {top: 40, right: 40, bottom: 40, left: 40},
+               width = 950 - margin.left - margin.right,
+               height = 500 - margin.top - margin.bottom;
+
+               // D3 Projection
+               var projection = d3.geoAlbersUsa()
+                 .translate([width / 2, height / 2])  // translate to center of screen
+                 .scale([1000]);                      // scale things down so see entire US
+
+               // Define path generator
+               var path = d3.geoPath()     // path generator that will convert GeoJSON to SVG paths
+                 .projection(projection);    // tell path generator to use albersUsa projection
+
+               // Create SVG element and append map to the SVG
+               var svg = d3.select(pos)
+                   .append("svg")
+                   .attr("width", width + margin.left + margin.right)
+                   .attr("height", height + margin.top + margin.bottom);
+               var tooltip = d3.select("body").append("div")
+                   .attr("class", "tooltip")
+                   .style("opacity", 0);
+
+               // Load in my states data!
+               d3.csv("data/us-states-bar-map.csv", function(data) {
+
+                 // Load my data and merge with states data
+                 d3.json("data/us-states.json", function(json) {
+
+                 // Loop through each state data value in the .csv file
+                 for (var i = 0; i < data.length; i++) {
+
+                   // Find the corresponding state inside the GeoJSON
+                   for (var j = 0; j < json.features.length; j++) {
+                       var jsonState = json.features[j].properties.name;
+                       var d = data[i]
+                       if ( d.state == jsonState) {
+                           // Copy the data value into the JSON
+                           if (isCases) {
+                             json.features[j].properties.color = d.color;
+                             json.features[j].properties.cases = d.cases;
+                             json.features[j].properties.cases_percent = d.cases_percent;
+                           }
+                           else {
+                             json.features[j].properties.color = d.color;
+                             json.features[j].properties.deaths = d.deaths;
+                             json.features[j].properties.deaths_percent = d.deaths_percent;
+                           }
+
+                           // Stop looking through the JSON
+                           break;
+                       }
+                   }
+               }
+
+               // Bind the data to the SVG and create one path per GeoJSON feature
+               svg.selectAll("path")
+                   .data(json.features)
+                   .enter()
+                   .append("path")
+                   .attr("d", path)
+                   .style("stroke", "#fff")
+                   .style("stroke-width", "1")
+                   .style("fill", function(d) {
+                       // console.log(d.properties.value)
+                       return tmp_color[d.properties.color] })
+                   .on("mouseover", function(d) {
+                       tooltip.transition()
+                           .duration(200)
+                           .style("opacity", .9);
+                       if (isCases) {
+                         tooltip.html("<h4>" + d.properties.name + "</h4><table>"
+                             + "<tr><td>cases<td>" + d.properties.cases + "</tr></td>"
+                             + "<tr><td>cass_percent<td>" + d.properties.cases_percent + "</tr></td>")
+                             .style("left", (d3.event.pageX + 5) + "px")
+                             .style("top", (d3.event.pageY - 28) + "px");
+                       }
+                       else {
+                         tooltip.html("<h4>" + d.properties.name + "</h4><table>"
+                             + "<tr><td>deaths<td>" + d.properties.deaths + "</tr></td>"
+                             + "<tr><td>deaths_percent<td>" + d.properties.deaths_percent + "</tr></td>")
+                             .style("left", (d3.event.pageX + 5) + "px")
+                             .style("top", (d3.event.pageY - 28) + "px");
+                       }
+
+                   })
+                   .on("mouseout", function(d) {
+                       tooltip.transition()
+                           .duration(500)
+                           .style("opacity", 0);
+                   });
+
+               });
+           });
+       }
+
+       map_func (true);
+       map_func (false);
+       </script>
+    </section>
+
   </body>
 </html>
