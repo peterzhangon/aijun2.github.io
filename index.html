@@ -5,11 +5,6 @@
 
 <!-- import d3.v4 -->
 <script src="https://d3js.org/d3.v4.js"></script>
-<script type="text/javascript">
-
-
-
-</script>
 
   <head>
     <title>Covid-19 Cases and Deaths Trends</title>
@@ -87,7 +82,7 @@
       // set the dimensions and margins of the graph
       var margin = {top: 10, right: 30, bottom: 30, left: 60},
           width = 860 - margin.left - margin.right,
-          height = 400 - margin.top - margin.bottom;
+          height = 300 - margin.top - margin.bottom;
 
       // append the svg object to the body of the page
       var svg = d3.select("#" + div_pos)
@@ -239,7 +234,7 @@
         // set the dimensions and margins of the graph
         var margin = {top: 30, right: 30, bottom: 70, left: 60},
             width = 1260 - margin.left - margin.right,
-            height = 400 - margin.top - margin.bottom;
+            height = 300 - margin.top - margin.bottom;
 
         // append the svg object to the body of the page
         var svg = d3.select(pos)
@@ -431,7 +426,7 @@
            // https://bl.ocks.org/wboykinm/dbbe50d1023f90d4e241712395c27fb3
            var margin = {top: 40, right: 40, bottom: 40, left: 40},
                width = 950 - margin.left - margin.right,
-               height = 500 - margin.top - margin.bottom;
+               height = 450 - margin.top - margin.bottom;
 
                // D3 Projection
                var projection = d3.geoAlbersUsa()
