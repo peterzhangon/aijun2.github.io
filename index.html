@@ -7,7 +7,7 @@
 <script src="https://d3js.org/d3.v4.js"></script>
 <script type="text/javascript">
 
-$(document).ready(function() {}
+
 
 </script>
 
@@ -23,10 +23,35 @@ $(document).ready(function() {}
 
   <!-- page 0: home page overview -->
   <!-- ************************** -->
+<section class="" id="section_home_page">
+  <div id="button_home_next">
+    <input name="updateButton"
+           type="button"
+           value="Next Page"
+           onclick="update_home_next()" />
+  </div>
+
+  <H1>Home page: Overview of Covid-19 status in USA</H1>
+</section>
 
   <!-- page 1: multiple lines -->
   <!-- ************************** -->
   <section class="" id="section_mul_lines">
+
+  <div id="button_mul_lines_pre">
+    <input name="updateButton"
+           type="button"
+           value="Previous Page"
+           onclick="update_mul_lines_pre()" />
+  </div>
+
+  <div id="button_mul_lines_next">
+    <input name="updateButton"
+           type="button"
+           value="Next Page"
+           onclick="update_mul_lines_next()" />
+  </div>
+
     <H1>Page-1: Covid-19 Trends</H1>
     <H2>Chart-1: Trends in cases</H2>
     <pre id="message-container"></pre>
@@ -160,6 +185,20 @@ $(document).ready(function() {}
   <!-- page 2: multiple bars -->
   <!-- ************************** -->
   <section class="" id="section_mul_bars">
+  <div id="button_mul_bars_pre">
+    <input name="updateButton"
+           type="button"
+           value="Previous Page"
+           onclick="update_mul_bars_pre()" />
+  </div>
+
+  <div id="button_mul_bars_next">
+    <input name="updateButton"
+           type="button"
+           value="Next Page"
+           onclick="update_mul_bars_next()" />
+  </div>
+
     <H1>Page-2: Cases comparison between states</H1>
     <H2>Chart-1: Comparasion in cases</H2>
       <pre id="message-container"></pre>
@@ -281,8 +320,7 @@ $(document).ready(function() {}
       bars_func(true);
       bars_func(false);
 
-      //document.getElementById("section_mul_lines").style.display = 'none';
-      document.getElementById("section_mul_bars").style.display = 'block';
+
       </script>
    </section>
 
@@ -290,6 +328,19 @@ $(document).ready(function() {}
    <!-- page 3: a map -->
    <!-- ************************** -->
    <section class="" id="section_mul_maps">
+   <div id="button_mul_map_pre">
+     <input name="updateButton"
+            type="button"
+            value="Previous Page"
+            onclick="update_mul_map_pre()" />
+   </div>
+
+   <div id="button_mul_map_next">
+     <input name="updateButton"
+            type="button"
+            value="Next Page"
+            onclick="update_mul_map_next()" />
+   </div>
      <H1>Page-4: Choropleth Map with Tooltips</H1>
      <H2>Chart-1: Compare based on cases</H2>
        <pre id="message-container"></pre>
@@ -478,5 +529,72 @@ $(document).ready(function() {}
        </script>
     </section>
 
+    <script>
+
+	  // Home page
+    function init_pages() {
+      console.log("init pages.");
+      document.getElementById("section_home_page").style.display = 'block'; // current
+      document.getElementById("section_mul_lines").style.display = 'none';
+      document.getElementById("section_mul_bars").style.display = 'none';
+      document.getElementById("section_mul_maps").style.display = 'none';
+    }
+    init_pages();
+      function update_home_next() {
+        console.log("page: Home - > line.");
+	    document.getElementById("section_home_page").style.display = 'none'; // current
+  	    document.getElementById("section_mul_lines").style.display = 'block';
+        document.getElementById("section_mul_bars").style.display = 'none';
+  	    document.getElementById("section_mul_maps").style.display = 'none';
+      }
+	  // Page 1
+	  function update_mul_lines_pre() {
+      console.log("page: Line - > Home.");
+	    document.getElementById("section_home_page").style.display = 'block';
+  	    document.getElementById("section_mul_lines").style.display = 'none';// current
+        document.getElementById("section_mul_bars").style.display = 'none';
+  	    document.getElementById("section_mul_maps").style.display = 'none';
+      }
+      function update_mul_lines_next() {
+        console.log("page: Line - > bar.");
+	    document.getElementById("section_home_page").style.display = 'none';
+  	    document.getElementById("section_mul_lines").style.display = 'none';// current
+        document.getElementById("section_mul_bars").style.display = 'block';
+  	    document.getElementById("section_mul_maps").style.display = 'none';
+      }
+	  // Page 2
+      function update_mul_bars_pre() {
+        console.log("page: bar - > line.");
+	    document.getElementById("section_home_page").style.display = 'none';
+  	    document.getElementById("section_mul_lines").style.display = 'block';
+        document.getElementById("section_mul_bars").style.display = 'none';// current
+  	    document.getElementById("section_mul_maps").style.display = 'none';
+      }
+      function update_mul_bars_next() {
+        console.log("page: bar - > map.");
+	    document.getElementById("section_home_page").style.display = 'none';
+  	    document.getElementById("section_mul_lines").style.display = 'none';
+        document.getElementById("section_mul_bars").style.display = 'none';// current
+  	    document.getElementById("section_mul_maps").style.display = 'block';
+      }
+
+	  // Page 3
+	  function update_mul_map_pre() {
+      console.log("page: map - > bar.");
+	    document.getElementById("section_home_page").style.display = 'none';
+  	    document.getElementById("section_mul_lines").style.display = 'none';
+        document.getElementById("section_mul_bars").style.display = 'block';
+  	    document.getElementById("section_mul_maps").style.display = 'none';// current
+      }
+      function update_mul_map_next() {
+        console.log("page: map - > end.");
+	    document.getElementById("section_home_page").style.display = 'block';
+  	    document.getElementById("section_mul_lines").style.display = 'none';
+        document.getElementById("section_mul_bars").style.display = 'none';
+  	    document.getElementById("section_mul_maps").style.display = 'block';// current
+      }
+
+	  // reference
+    </script>
   </body>
 </html>
