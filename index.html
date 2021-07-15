@@ -525,72 +525,104 @@
        </script>
     </section>
 
+       <!-- page 4: the last page -->
+       <!-- ************************** -->
+       <section class="" id="section_last_page">
+       <div id="button_last_page_pre">
+         <input name="updateButton"
+                type="button"
+                value="Previous Page"
+                onclick="update_last_page_pre()" />
+       </div>
+
+         <H1>The last page</H1>
+        </section>
+
     <script>
 
-	  // Home page
     function init_pages() {
       console.log("init pages.");
       document.getElementById("section_home_page").style.display = 'block'; // current
       document.getElementById("section_mul_lines").style.display = 'none';
       document.getElementById("section_mul_bars").style.display = 'none';
       document.getElementById("section_mul_maps").style.display = 'none';
+      document.getElementById("section_last_page").style.display = 'none';
     }
     init_pages();
+	    // Home page
       function update_home_next() {
         console.log("page: Home - > line.");
-	    document.getElementById("section_home_page").style.display = 'none'; // current
+	      document.getElementById("section_home_page").style.display = 'none'; // current
   	    document.getElementById("section_mul_lines").style.display = 'block';
         document.getElementById("section_mul_bars").style.display = 'none';
   	    document.getElementById("section_mul_maps").style.display = 'none';
+        document.getElementById("section_last_page").style.display = 'none';
       }
-	  // Page 1
-	  function update_mul_lines_pre() {
-      console.log("page: Line - > Home.");
-	    document.getElementById("section_home_page").style.display = 'block';
+
+	   // Page 1: multiple lines
+	   function update_mul_lines_pre() {
+        console.log("page: Line - > Home.");
+	      document.getElementById("section_home_page").style.display = 'block';
   	    document.getElementById("section_mul_lines").style.display = 'none';// current
         document.getElementById("section_mul_bars").style.display = 'none';
   	    document.getElementById("section_mul_maps").style.display = 'none';
+        document.getElementById("section_last_page").style.display = 'none';
       }
       function update_mul_lines_next() {
         console.log("page: Line - > bar.");
-	    document.getElementById("section_home_page").style.display = 'none';
+	      document.getElementById("section_home_page").style.display = 'none';
   	    document.getElementById("section_mul_lines").style.display = 'none';// current
         document.getElementById("section_mul_bars").style.display = 'block';
   	    document.getElementById("section_mul_maps").style.display = 'none';
+        document.getElementById("section_last_page").style.display = 'none';
       }
-	  // Page 2
+
+	    // Page 2 : multiple bars
       function update_mul_bars_pre() {
         console.log("page: bar - > line.");
 	    document.getElementById("section_home_page").style.display = 'none';
   	    document.getElementById("section_mul_lines").style.display = 'block';
         document.getElementById("section_mul_bars").style.display = 'none';// current
   	    document.getElementById("section_mul_maps").style.display = 'none';
+        document.getElementById("section_last_page").style.display = 'none';
       }
       function update_mul_bars_next() {
         console.log("page: bar - > map.");
-	    document.getElementById("section_home_page").style.display = 'none';
+	      document.getElementById("section_home_page").style.display = 'none';
   	    document.getElementById("section_mul_lines").style.display = 'none';
         document.getElementById("section_mul_bars").style.display = 'none';// current
   	    document.getElementById("section_mul_maps").style.display = 'block';
+        document.getElementById("section_last_page").style.display = 'none';
       }
 
-	  // Page 3
+	  // Page 3 : map
 	  function update_mul_map_pre() {
-      console.log("page: map - > bar.");
-	    document.getElementById("section_home_page").style.display = 'none';
+        console.log("page: map - > bar.");
+	      document.getElementById("section_home_page").style.display = 'none';
   	    document.getElementById("section_mul_lines").style.display = 'none';
         document.getElementById("section_mul_bars").style.display = 'block';
   	    document.getElementById("section_mul_maps").style.display = 'none';// current
+        document.getElementById("section_last_page").style.display = 'none';
       }
       function update_mul_map_next() {
         console.log("page: map - > end.");
-	    document.getElementById("section_home_page").style.display = 'block';
+	      document.getElementById("section_home_page").style.display = 'none';
   	    document.getElementById("section_mul_lines").style.display = 'none';
         document.getElementById("section_mul_bars").style.display = 'none';
-  	    document.getElementById("section_mul_maps").style.display = 'block';// current
+  	    document.getElementById("section_mul_maps").style.display = 'none'; // current
+        document.getElementById("section_last_page").style.display = 'block';
       }
 
-	  // reference
+        // Page 4 : last page
+  	    function update_last_page_pre() {
+          console.log("page: map - > last page.");
+  	      document.getElementById("section_home_page").style.display = 'none';
+    	    document.getElementById("section_mul_lines").style.display = 'none';
+          document.getElementById("section_mul_bars").style.display = 'none';
+    	    document.getElementById("section_mul_maps").style.display = 'block';
+          document.getElementById("section_last_page").style.display = 'none';// current
+        }
+
     </script>
   </body>
 </html>
