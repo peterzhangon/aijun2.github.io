@@ -14,33 +14,16 @@
   <!-- page 0: home page overview -->
   <!-- ************************** -->
   <section class="" id="section_home_page">
-    <div id="button_home_next">
-      <input name="updateButton"
-             type="button"
-             value="Next Page"
-             onclick="update_home_next()" />
-    </div>
-
+    <button type="button" onclick="update_home_next()">Next</button>
     <H1>Home page: Overview of Covid-19 status in USA</H1>
   </section>
 
   <!-- page 1: multiple lines -->
   <!-- ************************** -->
   <section class="" id="section_mul_lines">
-
-    <div id="button_mul_lines_pre">
-      <input name="updateButton"
-             type="button"
-             value="Previous Page"
-             onclick="update_mul_lines_pre()" />
-    </div>
-
-    <div id="button_mul_lines_next">
-      <input name="updateButton"
-             type="button"
-             value="Next Page"
-             onclick="update_mul_lines_next()" />
-    </div>
+    <button type="button" onclick="init_pages()">Home</button>
+    <button type="button" onclick="update_mul_lines_pre()">Previous</button>
+    <button type="button" onclick="update_mul_lines_next()">Next</button>
 
     <H1>Page-1: Covid-19 Trends</H1>
     <H2>Chart-1: Trends in cases</H2>
@@ -175,23 +158,13 @@
     <!-- page 2: multiple bars -->
     <!-- ************************** -->
     <section class="" id="section_mul_bars">
-    <div id="button_mul_bars_pre">
-      <input name="updateButton"
-             type="button"
-             value="Previous Page"
-             onclick="update_mul_bars_pre()" />
-    </div>
+      <button type="button" onclick="init_pages()">Home</button>
+      <button type="button" onclick="update_mul_bars_pre()">Previous</button>
+      <button type="button" onclick="update_mul_bars_next()">Next</button>
 
-    <div id="button_mul_bars_next">
-      <input name="updateButton"
-             type="button"
-             value="Next Page"
-             onclick="update_mul_bars_next()" />
-    </div>
-
-    <H1>Page-2: Cases comparison between states</H1>
-    <H2>Chart-1: Comparasion in cases</H2>
-    <pre id="message-container"></pre>
+      <H1>Page-2: Cases comparison between states</H1>
+      <H2>Chart-1: Comparasion in cases</H2>
+      <pre id="message-container"></pre>
 
       <!-- Create a div where the graph will take place -->
       <div id="tooltip_bar_left"></div>
@@ -316,19 +289,10 @@
    <!-- page 3: a map -->
    <!-- ************************** -->
    <section class="" id="section_mul_maps">
-   <div id="button_mul_map_pre">
-      <input name="updateButton"
-            type="button"
-            value="Previous Page"
-            onclick="update_mul_map_pre()" />
-    </div>
+     <button type="button" onclick="init_pages()">Home</button>
+     <button type="button" onclick="update_mul_map_pre()">Previous</button>
+     <button type="button" onclick="update_mul_map_next()">Next</button>
 
-    <div id="button_mul_map_next">
-      <input name="updateButton"
-            type="button"
-            value="Next Page"
-            onclick="update_mul_map_next()" />
-    </div>
       <H1>Page-4: Choropleth Map with Tooltips</H1>
       <H2>Chart-1: Compare based on cases</H2>
       <pre id="message-container"></pre>
@@ -581,13 +545,8 @@
     <!-- page 4: the last page -->
     <!-- ************************** -->
     <section class="" id="section_last_page">
-      <div id="button_last_page_pre">
-        <input name="updateButton"
-               type="button"
-               value="Previous Page"
-               onclick="update_last_page_pre()" />
-      </div>
-
+      <button type="button" onclick="init_pages()">Home</button>
+      <button type="button" onclick="update_last_page_pre()">Previous</button>
       <H1>The last page</H1>
     </section>
 
