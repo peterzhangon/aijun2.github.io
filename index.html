@@ -9,10 +9,32 @@
   <head>
     <title>A whole picture on Covid-19 Cases and Deaths in USA</title>
 
-    <style>
-      pre {
-        font-size: 7em;
-      }
+    <!-- button style -->
+
+    /* Legend Font Style */
+    <style type="text/css">
+    body {
+    	font: 11px sans-serif;
+    	background-color: #ffffff;
+    }
+
+    /* Legend Position Style */
+    .legend {
+    	position:absolute;
+    	left:20px;
+    	top:30px;
+    }
+
+    .axis text {
+    	font: 10px sans-serif;
+    }
+
+    .axis line, .axis path {
+    	fill: none;
+    	stroke: #000;
+    	shape-rendering: crispEdges;
+    }
+
     </style>
   </head>
   <body>
@@ -348,6 +370,7 @@
        <div id="tooltip_map_right"></div>
        <div id="mul_map_right"></div>
        <div id="tooltip"></div>
+       <div id="legend"></div>
 
        <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 
@@ -426,8 +449,11 @@
 
            // https://bl.ocks.org/wboykinm/dbbe50d1023f90d4e241712395c27fb3
            var margin = {top: 40, right: 40, bottom: 40, left: 40},
-               width = 950 - margin.left - margin.right,
-               height = 450 - margin.top - margin.bottom;
+               width = 960,// - margin.left - margin.right,
+               height = 500;// - margin.top - margin.bottom;
+
+               var lowColor = '#f9f9f9'
+               var highColor = '#bc2a66'
 
                // D3 Projection
                var projection = d3.geoAlbersUsa()
@@ -449,6 +475,19 @@
 
                // Load in my states data!
                d3.csv("data/us-states-bar-map.csv", function(data) {
+                 var dataArray = [];
+               	 for (var i = 0; i < data.length; i++) {
+                    if(isCases) {
+                       data[i].value = data[i].cases;
+                    } else {
+
+                      data[i].value = data[i].deaths;
+                    }
+                    dataArray.push(parseFloat(data[i].value))
+               	 }
+               	 var minVal = d3.min(dataArray)
+               	 var maxVal = d3.max(dataArray)
+               	 var ramp = d3.scaleLinear().domain([minVal, maxVal]).range([lowColor, highColor])
 
                  // Load my data and merge with states data
                  d3.json("data/us-states.json", function(json) {
@@ -462,6 +501,7 @@
                        var d = data[i]
                        if ( d.state == jsonState) {
                            // Copy the data value into the JSON
+                           json.features[j].properties.value = d.value;
                            if (isCases) {
                              json.features[j].properties.color = d.color;
                              json.features[j].properties.cases = d.cases;
@@ -487,9 +527,7 @@
                    .attr("d", path)
                    .style("stroke", "#fff")
                    .style("stroke-width", "1")
-                   .style("fill", function(d) {
-                       // console.log(d.properties.value)
-                       return tmp_color[d.properties.color] })
+                   .style("fill", function(d) {return ramp(d.properties.value)})
                    .on("mouseover", function(d) {
                        tooltip.transition()
                            .duration(200)
@@ -516,6 +554,50 @@
                            .style("opacity", 0);
                    });
 
+                   // add a legend
+               		var w = 140, h = 300;
+
+               		var key = d3.select("path")
+               			.append("svg")
+               			.attr("width", w)
+               			.attr("height", h)
+               			.attr("class", "legend");
+
+               		var legend = key.append("defs")
+               			.append("svg:linearGradient")
+               			.attr("id", "gradient")
+               			.attr("x1", "100%")
+               			.attr("y1", "0%")
+               			.attr("x2", "100%")
+               			.attr("y2", "100%")
+               			.attr("spreadMethod", "pad");
+
+               		legend.append("stop")
+               			.attr("offset", "0%")
+               			.attr("stop-color", highColor)
+               			.attr("stop-opacity", 1);
+
+               		legend.append("stop")
+               			.attr("offset", "100%")
+               			.attr("stop-color", lowColor)
+               			.attr("stop-opacity", 1);
+
+               		key.append("rect")
+               			.attr("width", w - 100)
+               			.attr("height", h)
+               			.style("fill", "url(#gradient)")
+               			.attr("transform", "translate(0,10)");
+
+               		var y = d3.scaleLinear()
+               			.range([h, 0])
+               			.domain([minVal, maxVal]);
+
+               		var yAxis = d3.axisRight(y);
+
+               		key.append("g")
+               			.attr("class", "y axis")
+               			.attr("transform", "translate(41,10)")
+               			.call(yAxis)
                });
            });
        }
