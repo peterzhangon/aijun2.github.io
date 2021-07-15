@@ -8,40 +8,39 @@
 
   <head>
     <title>A whole picture on Covid-19 Cases and Deaths in USA</title>
-
   </head>
   <body>
 
   <!-- page 0: home page overview -->
   <!-- ************************** -->
-<section class="" id="section_home_page">
-  <div id="button_home_next">
-    <input name="updateButton"
-           type="button"
-           value="Next Page"
-           onclick="update_home_next()" />
-  </div>
+  <section class="" id="section_home_page">
+    <div id="button_home_next">
+      <input name="updateButton"
+             type="button"
+             value="Next Page"
+             onclick="update_home_next()" />
+    </div>
 
-  <H1>Home page: Overview of Covid-19 status in USA</H1>
-</section>
+    <H1>Home page: Overview of Covid-19 status in USA</H1>
+  </section>
 
   <!-- page 1: multiple lines -->
   <!-- ************************** -->
   <section class="" id="section_mul_lines">
 
-  <div id="button_mul_lines_pre">
-    <input name="updateButton"
-           type="button"
-           value="Previous Page"
-           onclick="update_mul_lines_pre()" />
-  </div>
+    <div id="button_mul_lines_pre">
+      <input name="updateButton"
+             type="button"
+             value="Previous Page"
+             onclick="update_mul_lines_pre()" />
+    </div>
 
-  <div id="button_mul_lines_next">
-    <input name="updateButton"
-           type="button"
-           value="Next Page"
-           onclick="update_mul_lines_next()" />
-  </div>
+    <div id="button_mul_lines_next">
+      <input name="updateButton"
+             type="button"
+             value="Next Page"
+             onclick="update_mul_lines_next()" />
+    </div>
 
     <H1>Page-1: Covid-19 Trends</H1>
     <H2>Chart-1: Trends in cases</H2>
@@ -55,144 +54,144 @@
     <div id="mul_line_right"></div>
 
     <script>
-    function get_d_val(isCases, d) {
-      if(isCases)
-      {
-        return d.cases;
+      function get_d_val(isCases, d) {
+        if(isCases)
+        {
+          return d.cases;
+        }
+        else
+        {
+          return d.deaths;
+        }
       }
-      else
-      {
-        return d.deaths;
-      }
-    }
-    function mul_lines_func (isCases) {
-      // TODO, tooltip not work yet
-      if (isCases) {
-          pos_tooltip = "#tooltip_lines_left";
-          div_pos = "mul_line_left";
-      } else {
-          pos_tooltip = "#tooltip_lines_right";
-          div_pos = "mul_line_right"; /// We just append
-      }
+      function mul_lines_func (isCases) {
+        // TODO, tooltip not work yet
+        if (isCases) {
+            pos_tooltip = "#tooltip_lines_left";
+            div_pos = "mul_line_left";
+        } else {
+            pos_tooltip = "#tooltip_lines_right";
+            div_pos = "mul_line_right"; /// We just append
+        }
 
-      // set the dimensions and margins of the graph
-      var margin = {top: 10, right: 30, bottom: 30, left: 60},
+        // set the dimensions and margins of the graph
+        var margin = {top: 10, right: 30, bottom: 30, left: 60},
           width = 860 - margin.left - margin.right,
           height = 300 - margin.top - margin.bottom;
 
-      // append the svg object to the body of the page
-      var svg = d3.select("#" + div_pos)
-        .append("svg")
-          .attr("width", width + margin.left + margin.right)
-          .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-          .attr("transform",
-                "translate(" + margin.left + "," + margin.top + ")");
+        // append the svg object to the body of the page
+        var svg = d3.select("#" + div_pos)
+          .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform",
+                  "translate(" + margin.left + "," + margin.top + ")");
 
-      // Read the data
-      d3.csv("data/us-states-trend.csv", function(data) {
+        // Read the data
+        d3.csv("data/us-states-trend.csv", function(data) {
 
-        var parseTime = d3.timeParse("%Y/%m/%d");
+          var parseTime = d3.timeParse("%Y/%m/%d");
 
-        data.forEach(function(d) {
-            d.date = parseTime(d.date);
-          });
+          data.forEach(function(d) {
+              d.date = parseTime(d.date);
+            });
 
-        // group the data: I want to draw one line per group
-        var sumstat = d3.nest() // nest function allows to group the calculation per level of a factor
-          .key(function(d) { return d.state;})
-          .entries(data);
+          // group the data: I want to draw one line per group
+          var sumstat = d3.nest() // nest function allows to group the calculation per level of a factor
+            .key(function(d) { return d.state;})
+            .entries(data);
 
-        // Add X axis --> it is a date format
-        var x = d3.scaleLinear()
-          .domain(d3.extent(data, function(d) { return d.date; }))
-          .range([ 0, width ]);
+          // Add X axis --> it is a date format
+          var x = d3.scaleLinear()
+            .domain(d3.extent(data, function(d) { return d.date; }))
+            .range([ 0, width ]);
 
-        svg.append("g")
-          .attr("transform", "translate(0," + height + ")")
-          .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%Y-%m")))
+          svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%Y-%m")))
 
-        // Add Y axis
-        var y = d3.scaleLinear()
-          .domain([0, d3.max(data, function(d) {return +get_d_val(isCases, d);})])
-          .range([ height, 0 ]);
+          // Add Y axis
+          var y = d3.scaleLinear()
+            .domain([0, d3.max(data, function(d) {return +get_d_val(isCases, d);})])
+            .range([ height, 0 ]);
 
-        svg.append("g")
-          .call(d3.axisLeft(y));
+          svg.append("g")
+            .call(d3.axisLeft(y));
 
-        // color palette
-        var res = sumstat.map(function(d){ return d.key }) // list of group names
+          // color palette
+          var res = sumstat.map(function(d){ return d.key }) // list of group names
 
-        var color = d3.scaleOrdinal()
-          .domain(res)
-          .range(["#1b70fc", "#faff16", "#d50527", "#158940", "#f898fd", "#24c9d7", "#cb9b64", "#866888",
-          "#22e67a", "#e509ae", "#9dabfa", "#437e8a", "#b21bff", "#ff7b91", "#94aa05", "#ac5906", "#82a68d", "#fe6616",
-          "#7a7352", "#f9bc0f", "#b65d66", "#07a2e6", "#c091ae", "#8a91a7", "#88fc07", "#ea42fe", "#9e8010", "#10b437",
-          "#c281fe", "#f92b75", "#07c99d", "#a946aa", "#bfd544", "#16977e", "#ff6ac8", "#a88178", "#5776a9", "#678007",
-          "#fa9316", "#85c070", "#6aa2a9", "#989e5d", "#fe9169", "#cd714a", "#6ed014", "#c5639c", "#c23271", "#698ffc",
-          "#678275", "#c5a121", "#a978ba", "#ee534e", "#d24506", "#59c3fa", "#ca7b0a", "#6f7385", "#9a634a", "#48aa6f",
-          "#ad9ad0", "#d7908c", "#6a8a53", "#8c46fc", "#8f5ab8", "#fd1105", "#7ea7cf", "#d77cd1", "#a9804b", "#0688b4",
-          "#6a9f3e", "#ee8fba", "#a67389", "#9e8cfe", "#bd443c", "#6d63ff", "#d110d5", "#798cc3", "#df5f83", "#b1b853",
-          "#bb59d8", "#1d960c", "#867ba8", "#18acc9", "#25b3a7", "#f3db1d", "#938c6d", "#936a24", "#a964fb", "#92e460",
-          "#a05787", "#9c87a0", "#20c773", "#8b696d", "#78762d", "#e154c6", "#40835f", "#d73656", "#1afd5c", "#c4f546",
-          "#3d88d8", "#bd3896", "#1397a3", "#f940a5", "#66aeff", "#d097e7", "#fe6ef9", "#d86507", "#8b900a", "#d47270",
-          "#e8ac48", "#cf7c97", "#cebb11", "#718a90", "#e78139", "#ff7463", "#bea1fd"])
+          var color = d3.scaleOrdinal()
+            .domain(res)
+            .range(["#1b70fc", "#faff16", "#d50527", "#158940", "#f898fd", "#24c9d7", "#cb9b64", "#866888",
+            "#22e67a", "#e509ae", "#9dabfa", "#437e8a", "#b21bff", "#ff7b91", "#94aa05", "#ac5906", "#82a68d", "#fe6616",
+            "#7a7352", "#f9bc0f", "#b65d66", "#07a2e6", "#c091ae", "#8a91a7", "#88fc07", "#ea42fe", "#9e8010", "#10b437",
+            "#c281fe", "#f92b75", "#07c99d", "#a946aa", "#bfd544", "#16977e", "#ff6ac8", "#a88178", "#5776a9", "#678007",
+            "#fa9316", "#85c070", "#6aa2a9", "#989e5d", "#fe9169", "#cd714a", "#6ed014", "#c5639c", "#c23271", "#698ffc",
+            "#678275", "#c5a121", "#a978ba", "#ee534e", "#d24506", "#59c3fa", "#ca7b0a", "#6f7385", "#9a634a", "#48aa6f",
+            "#ad9ad0", "#d7908c", "#6a8a53", "#8c46fc", "#8f5ab8", "#fd1105", "#7ea7cf", "#d77cd1", "#a9804b", "#0688b4",
+            "#6a9f3e", "#ee8fba", "#a67389", "#9e8cfe", "#bd443c", "#6d63ff", "#d110d5", "#798cc3", "#df5f83", "#b1b853",
+            "#bb59d8", "#1d960c", "#867ba8", "#18acc9", "#25b3a7", "#f3db1d", "#938c6d", "#936a24", "#a964fb", "#92e460",
+            "#a05787", "#9c87a0", "#20c773", "#8b696d", "#78762d", "#e154c6", "#40835f", "#d73656", "#1afd5c", "#c4f546",
+            "#3d88d8", "#bd3896", "#1397a3", "#f940a5", "#66aeff", "#d097e7", "#fe6ef9", "#d86507", "#8b900a", "#d47270",
+            "#e8ac48", "#cf7c97", "#cebb11", "#718a90", "#e78139", "#ff7463", "#bea1fd"])
 
-        // Draw the line
-        svg.selectAll(".line")
+          // Draw the line
+          svg.selectAll(".line")
             .data(sumstat)
             .enter()
             .append("path")
-              .attr("fill", "none")
-              .attr("stroke", function(d){return color(d.values[0].state) })
-              .attr("stroke-width", 1.5)
-              .attr("d", function(d){
-                return d3.line()
-                  .x(function(d) { return x(d.date); })
-                  .y(function(d) {return y(+get_d_val(isCases, d));})
-                  (d.values)
-              })
-              .on("mouseover", function(d,i) { // TODO, tooltip not work yet
-                d3.select(pos_tooltip).style("opacity", 1)
-                  .style("left",(d3.event.pageX)+"px")
-                  .style("top",(d3.event.pageY)+"px")
-                  .html("Item #: "+i+", state: " + d.state + ", cases: " + d.cases + ", deaths: " + d.deaths);
-              })
-             .on("mouseout", function() {
-                d3.select(pos_tooltip).style("opacity", 0)
-              })
+            .attr("fill", "none")
+            .attr("stroke", function(d){return color(d.values[0].state) })
+            .attr("stroke-width", 1.5)
+            .attr("d", function(d){
+              return d3.line()
+                .x(function(d) { return x(d.date); })
+                .y(function(d) {return y(+get_d_val(isCases, d));})
+                (d.values)
             })
+            .on("mouseover", function(d,i) { // TODO, tooltip not work yet
+              d3.select(pos_tooltip).style("opacity", 1)
+                .style("left",(d3.event.pageX)+"px")
+                .style("top",(d3.event.pageY)+"px")
+                .html("Item #: "+i+", state: " + d.state + ", cases: " + d.cases + ", deaths: " + d.deaths);
+            })
+            .on("mouseout", function() {
+               d3.select(pos_tooltip).style("opacity", 0)
+             })
+          })
 
-    }
-    mul_lines_func(false)
-    mul_lines_func(true)
+      }
+      mul_lines_func(false)
+      mul_lines_func(true)
 
 
-    </script>
-  </section>
+      </script>
+    </section>
 
 
 
-  <!-- page 2: multiple bars -->
-  <!-- ************************** -->
-  <section class="" id="section_mul_bars">
-  <div id="button_mul_bars_pre">
-    <input name="updateButton"
-           type="button"
-           value="Previous Page"
-           onclick="update_mul_bars_pre()" />
-  </div>
+    <!-- page 2: multiple bars -->
+    <!-- ************************** -->
+    <section class="" id="section_mul_bars">
+    <div id="button_mul_bars_pre">
+      <input name="updateButton"
+             type="button"
+             value="Previous Page"
+             onclick="update_mul_bars_pre()" />
+    </div>
 
-  <div id="button_mul_bars_next">
-    <input name="updateButton"
-           type="button"
-           value="Next Page"
-           onclick="update_mul_bars_next()" />
-  </div>
+    <div id="button_mul_bars_next">
+      <input name="updateButton"
+             type="button"
+             value="Next Page"
+             onclick="update_mul_bars_next()" />
+    </div>
 
     <H1>Page-2: Cases comparison between states</H1>
     <H2>Chart-1: Comparasion in cases</H2>
-      <pre id="message-container"></pre>
+    <pre id="message-container"></pre>
 
       <!-- Create a div where the graph will take place -->
       <div id="tooltip_bar_left"></div>
@@ -227,26 +226,26 @@
             pos = "#mul_bars_right";
           }
 
-        // set the dimensions and margins of the graph
-        var margin = {top: 30, right: 30, bottom: 70, left: 60},
-            width = 1260 - margin.left - margin.right,
-            height = 300 - margin.top - margin.bottom;
+          // set the dimensions and margins of the graph
+          var margin = {top: 30, right: 30, bottom: 70, left: 60},
+              width = 1260 - margin.left - margin.right,
+              height = 300 - margin.top - margin.bottom;
 
-        // append the svg object to the body of the page
-        var svg = d3.select(pos)
-          .append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-          .append("g")
-            .attr("transform",
-                  "translate(" + margin.left + "," + margin.top + ")");
+          // append the svg object to the body of the page
+          var svg = d3.select(pos)
+            .append("svg")
+              .attr("width", width + margin.left + margin.right)
+              .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+              .attr("transform",
+                    "translate(" + margin.left + "," + margin.top + ")");
 
-        // Parse the Data
-        d3.csv("data/us-states-bar-map.csv", function(data) {
-          // sort data
-          data.sort(function(b, a) {
-            return get_d_val(isCases, a) - get_d_val(isCases, b);
-          });
+          // Parse the Data
+          d3.csv("data/us-states-bar-map.csv", function(data) {
+            // sort data
+            data.sort(function(b, a) {
+              return get_d_val(isCases, a) - get_d_val(isCases, b);
+            });
 
           // color palette
           var res = data.map(function(d){ return d.state }) // list of group names
@@ -310,8 +309,6 @@
 
       bars_func(true);
       bars_func(false);
-
-
       </script>
    </section>
 
@@ -320,34 +317,34 @@
    <!-- ************************** -->
    <section class="" id="section_mul_maps">
    <div id="button_mul_map_pre">
-     <input name="updateButton"
+      <input name="updateButton"
             type="button"
             value="Previous Page"
             onclick="update_mul_map_pre()" />
-   </div>
+    </div>
 
-   <div id="button_mul_map_next">
-     <input name="updateButton"
+    <div id="button_mul_map_next">
+      <input name="updateButton"
             type="button"
             value="Next Page"
             onclick="update_mul_map_next()" />
-   </div>
-     <H1>Page-4: Choropleth Map with Tooltips</H1>
-     <H2>Chart-1: Compare based on cases</H2>
-       <pre id="message-container"></pre>
+    </div>
+      <H1>Page-4: Choropleth Map with Tooltips</H1>
+      <H2>Chart-1: Compare based on cases</H2>
+      <pre id="message-container"></pre>
 
-       <!-- Create a div where the graph will take place -->
-       <div id="tooltip_map_left"></div>
-       <div id="mul_map_left"></div>
-       <H2>Chart-2: Compare based on deaths</H2>
-       <div id="tooltip_map_right"></div>
-       <div id="mul_map_right"></div>
-       <div id="tooltip"></div>
-       <div id="legend"></div>
+      <!-- Create a div where the graph will take place -->
+      <div id="tooltip_map_left"></div>
+      <div id="mul_map_left"></div>
+      <H2>Chart-2: Compare based on deaths</H2>
+      <div id="tooltip_map_right"></div>
+      <div id="mul_map_right"></div>
+      <div id="tooltip"></div>
+      <div id="legend"></div>
 
-       <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+      <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 
-       <script>
+      <script>
        tmp_color = {
          0: "#1b70fc",
          1: "#faff16",
@@ -407,7 +404,6 @@
          55: "#6f7385"
          };
 
-
        function map_func (isCases) {
          if(isCases)
          {
@@ -442,6 +438,7 @@
                    .append("svg")
                    .attr("width", width + margin.left + margin.right)
                    .attr("height", height + margin.top + margin.bottom);
+
                var tooltip = d3.select("body").append("div")
                    .attr("class", "tooltip")
                    .style("opacity", 0);
@@ -449,7 +446,7 @@
                // Load in my states data!
                d3.csv("data/us-states-bar-map.csv", function(data) {
                  var dataArray = [];
-               	 for (var i = 0; i < data.length; i++) {
+                    for (var i = 0; i < data.length; i++) {
                     if(isCases) {
                        data[i].value = data[i].cases;
                     } else {
@@ -457,10 +454,10 @@
                       data[i].value = data[i].deaths;
                     }
                     dataArray.push(parseFloat(data[i].value))
-               	 }
-               	 var minVal = d3.min(dataArray)
-               	 var maxVal = d3.max(dataArray)
-               	 var ramp = d3.scaleLinear().domain([minVal, maxVal]).range([lowColor, highColor])
+                    }
+                    var minVal = d3.min(dataArray)
+                    var maxVal = d3.max(dataArray)
+                    var ramp = d3.scaleLinear().domain([minVal, maxVal]).range([lowColor, highColor])
 
                  // Load my data and merge with states data
                  d3.json("data/us-states.json", function(json) {
@@ -528,49 +525,49 @@
                    });
 
                    // add a legend
-               		var w = 140, h = 300;
+                     var w = 140, h = 300;
 
-               		var key = d3.select("path")
-               			.append("svg")
-               			.attr("width", w)
-               			.attr("height", h)
-               			.attr("class", "legend");
+                     var key = d3.select("path")
+                         .append("svg")
+                           .attr("width", w)
+                           .attr("height", h)
+                           .attr("class", "legend");
 
-               		var legend = key.append("defs")
-               			.append("svg:linearGradient")
-               			.attr("id", "gradient")
-               			.attr("x1", "100%")
-               			.attr("y1", "0%")
-               			.attr("x2", "100%")
-               			.attr("y2", "100%")
-               			.attr("spreadMethod", "pad");
+                       var legend = key.append("defs")
+                           .append("svg:linearGradient")
+                           .attr("id", "gradient")
+                           .attr("x1", "100%")
+                           .attr("y1", "0%")
+                           .attr("x2", "100%")
+                           .attr("y2", "100%")
+                           .attr("spreadMethod", "pad");
 
-               		legend.append("stop")
-               			.attr("offset", "0%")
-               			.attr("stop-color", highColor)
-               			.attr("stop-opacity", 1);
+                       legend.append("stop")
+                           .attr("offset", "0%")
+                           .attr("stop-color", highColor)
+                           .attr("stop-opacity", 1);
 
-               		legend.append("stop")
-               			.attr("offset", "100%")
-               			.attr("stop-color", lowColor)
-               			.attr("stop-opacity", 1);
+                     legend.append("stop")
+                           .attr("offset", "100%")
+                           .attr("stop-color", lowColor)
+                           .attr("stop-opacity", 1);
 
-               		key.append("rect")
-               			.attr("width", w - 100)
-               			.attr("height", h)
-               			.style("fill", "url(#gradient)")
-               			.attr("transform", "translate(0,10)");
+                       key.append("rect")
+                           .attr("width", w - 100)
+                           .attr("height", h)
+                           .style("fill", "url(#gradient)")
+                           .attr("transform", "translate(0,10)");
 
-               		var y = d3.scaleLinear()
-               			.range([h, 0])
-               			.domain([minVal, maxVal]);
+                       var y = d3.scaleLinear()
+                           .range([h, 0])
+                           .domain([minVal, maxVal]);
 
-               		var yAxis = d3.axisRight(y);
+                       var yAxis = d3.axisRight(y);
 
-               		key.append("g")
-               			.attr("class", "y axis")
-               			.attr("transform", "translate(41,10)")
-               			.call(yAxis)
+                       key.append("g")
+                           .attr("class", "y axis")
+                           .attr("transform", "translate(41,10)")
+                           .call(yAxis)
                });
            });
        }
@@ -580,104 +577,104 @@
        </script>
     </section>
 
-       <!-- page 4: the last page -->
-       <!-- ************************** -->
-       <section class="" id="section_last_page">
-       <div id="button_last_page_pre">
-         <input name="updateButton"
-                type="button"
-                value="Previous Page"
-                onclick="update_last_page_pre()" />
-       </div>
 
-         <H1>The last page</H1>
-        </section>
+    <!-- page 4: the last page -->
+    <!-- ************************** -->
+    <section class="" id="section_last_page">
+      <div id="button_last_page_pre">
+        <input name="updateButton"
+               type="button"
+               value="Previous Page"
+               onclick="update_last_page_pre()" />
+      </div>
+
+      <H1>The last page</H1>
+    </section>
 
     <script>
+      function init_pages() {
+        console.log("init pages.");
+        document.getElementById("section_home_page").style.display = 'block'; // current
+        document.getElementById("section_mul_lines").style.display = 'none';
+        document.getElementById("section_mul_bars").style.display = 'none';
+        document.getElementById("section_mul_maps").style.display = 'none';
+        document.getElementById("section_last_page").style.display = 'none';
+      }
+      init_pages();
 
-    function init_pages() {
-      console.log("init pages.");
-      document.getElementById("section_home_page").style.display = 'block'; // current
-      document.getElementById("section_mul_lines").style.display = 'none';
-      document.getElementById("section_mul_bars").style.display = 'none';
-      document.getElementById("section_mul_maps").style.display = 'none';
-      document.getElementById("section_last_page").style.display = 'none';
-    }
-    init_pages();
-	    // Home page
+      // Home page
       function update_home_next() {
         console.log("page: Home - > line.");
-	      document.getElementById("section_home_page").style.display = 'none'; // current
-  	    document.getElementById("section_mul_lines").style.display = 'block';
+        document.getElementById("section_home_page").style.display = 'none'; // current
+        document.getElementById("section_mul_lines").style.display = 'block';
         document.getElementById("section_mul_bars").style.display = 'none';
-  	    document.getElementById("section_mul_maps").style.display = 'none';
+        document.getElementById("section_mul_maps").style.display = 'none';
         document.getElementById("section_last_page").style.display = 'none';
       }
 
-	   // Page 1: multiple lines
-	   function update_mul_lines_pre() {
+      // Page 1: multiple lines
+      function update_mul_lines_pre() {
         console.log("page: Line - > Home.");
-	      document.getElementById("section_home_page").style.display = 'block';
-  	    document.getElementById("section_mul_lines").style.display = 'none';// current
+        document.getElementById("section_home_page").style.display = 'block';
+        document.getElementById("section_mul_lines").style.display = 'none';// current
         document.getElementById("section_mul_bars").style.display = 'none';
-  	    document.getElementById("section_mul_maps").style.display = 'none';
+        document.getElementById("section_mul_maps").style.display = 'none';
         document.getElementById("section_last_page").style.display = 'none';
       }
       function update_mul_lines_next() {
         console.log("page: Line - > bar.");
-	      document.getElementById("section_home_page").style.display = 'none';
-  	    document.getElementById("section_mul_lines").style.display = 'none';// current
+        document.getElementById("section_home_page").style.display = 'none';
+        document.getElementById("section_mul_lines").style.display = 'none';// current
         document.getElementById("section_mul_bars").style.display = 'block';
-  	    document.getElementById("section_mul_maps").style.display = 'none';
+        document.getElementById("section_mul_maps").style.display = 'none';
         document.getElementById("section_last_page").style.display = 'none';
       }
 
-	    // Page 2 : multiple bars
+      // Page 2 : multiple bars
       function update_mul_bars_pre() {
         console.log("page: bar - > line.");
-	    document.getElementById("section_home_page").style.display = 'none';
-  	    document.getElementById("section_mul_lines").style.display = 'block';
+        document.getElementById("section_home_page").style.display = 'none';
+        document.getElementById("section_mul_lines").style.display = 'block';
         document.getElementById("section_mul_bars").style.display = 'none';// current
-  	    document.getElementById("section_mul_maps").style.display = 'none';
+        document.getElementById("section_mul_maps").style.display = 'none';
         document.getElementById("section_last_page").style.display = 'none';
       }
       function update_mul_bars_next() {
         console.log("page: bar - > map.");
-	      document.getElementById("section_home_page").style.display = 'none';
-  	    document.getElementById("section_mul_lines").style.display = 'none';
+        document.getElementById("section_home_page").style.display = 'none';
+        document.getElementById("section_mul_lines").style.display = 'none';
         document.getElementById("section_mul_bars").style.display = 'none';// current
-  	    document.getElementById("section_mul_maps").style.display = 'block';
+        document.getElementById("section_mul_maps").style.display = 'block';
         document.getElementById("section_last_page").style.display = 'none';
       }
 
-	  // Page 3 : map
-	  function update_mul_map_pre() {
+      // Page 3 : map
+      function update_mul_map_pre() {
         console.log("page: map - > bar.");
-	      document.getElementById("section_home_page").style.display = 'none';
-  	    document.getElementById("section_mul_lines").style.display = 'none';
+        document.getElementById("section_home_page").style.display = 'none';
+        document.getElementById("section_mul_lines").style.display = 'none';
         document.getElementById("section_mul_bars").style.display = 'block';
-  	    document.getElementById("section_mul_maps").style.display = 'none';// current
+        document.getElementById("section_mul_maps").style.display = 'none';// current
         document.getElementById("section_last_page").style.display = 'none';
       }
       function update_mul_map_next() {
         console.log("page: map - > end.");
-	      document.getElementById("section_home_page").style.display = 'none';
-  	    document.getElementById("section_mul_lines").style.display = 'none';
+        document.getElementById("section_home_page").style.display = 'none';
+        document.getElementById("section_mul_lines").style.display = 'none';
         document.getElementById("section_mul_bars").style.display = 'none';
-  	    document.getElementById("section_mul_maps").style.display = 'none'; // current
+        document.getElementById("section_mul_maps").style.display = 'none'; // current
         document.getElementById("section_last_page").style.display = 'block';
       }
 
-        // Page 4 : last page
-  	    function update_last_page_pre() {
-          console.log("page: map - > last page.");
-  	      document.getElementById("section_home_page").style.display = 'none';
-    	    document.getElementById("section_mul_lines").style.display = 'none';
-          document.getElementById("section_mul_bars").style.display = 'none';
-    	    document.getElementById("section_mul_maps").style.display = 'block';
-          document.getElementById("section_last_page").style.display = 'none';// current
-        }
-
+      // Page 4 : last page
+      function update_last_page_pre() {
+        console.log("page: map - > last page.");
+        document.getElementById("section_home_page").style.display = 'none';
+        document.getElementById("section_mul_lines").style.display = 'none';
+        document.getElementById("section_mul_bars").style.display = 'none';
+        document.getElementById("section_mul_maps").style.display = 'block';
+        document.getElementById("section_last_page").style.display = 'none';// current
+      }
     </script>
   </body>
 </html>
