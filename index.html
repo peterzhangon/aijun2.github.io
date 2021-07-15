@@ -14,6 +14,8 @@
   <!-- page 0: home page overview -->
   <!-- ************************** -->
   <section class="" id="section_home_page">
+    <button type="button", id="home_home_button" >Home</button>
+    <button type="button", id="home_pre_button" >Previous</button>
     <button type="button" onclick="update_home_next()">Next</button>
     <H1>Home page: Overview of Covid-19 status in USA</H1>
   </section>
@@ -547,6 +549,7 @@
     <section class="" id="section_last_page">
       <button type="button" onclick="init_pages()">Home</button>
       <button type="button" onclick="update_last_page_pre()">Previous</button>
+      <button type="button", id="last_next_button">Next</button>
       <H1>The last page</H1>
     </section>
 
@@ -558,6 +561,10 @@
         document.getElementById("section_mul_bars").style.display = 'none';
         document.getElementById("section_mul_maps").style.display = 'none';
         document.getElementById("section_last_page").style.display = 'none';
+        // Disable buttons
+        document.getElementById("home_home_button").disabled = true;
+        document.getElementById("home_pre_button").disabled = true;
+        document.getElementById("last_next_button").disabled = true;
       }
       init_pages();
 
