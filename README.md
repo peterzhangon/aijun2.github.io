@@ -1,5 +1,7 @@
 # aijun2.github.io
 
+A whole picture on Covid-19 in USA (https://peterzhangon.github.io/aijun2.github.io/).
+
 ## Data Source
 I am using the following public data till July 9, 2021.
 
