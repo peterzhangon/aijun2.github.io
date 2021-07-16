@@ -2,6 +2,7 @@
 
 <html>
 <link href='https://fonts.googleapis.com/css?family=Lato:300,900' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="css/basic.css" />
 
 <!-- import d3.v4 -->
 <script src="https://d3js.org/d3.v4.js"></script>
@@ -28,15 +29,11 @@
     <button type="button" onclick="update_mul_lines_next()">Next</button>
 
     <H1>Page-1: Covid-19 Trends</H1>
-    <H2>Chart-1: Trends in cases</H2>
     <pre id="message-container"></pre>
 
     <!-- Create a div where the graph will take place -->
     <div id="tooltip_lines_left"></div>
     <div id="mul_line_left"></div>
-    <H2>Chart-2: Trends in deaths</H2>
-    <div id="tooltip_lines_right"></div>
-    <div id="mul_line_right"></div>
 
     <script>
       function get_d_val(isCases, d) {
@@ -50,13 +47,16 @@
         }
       }
       function mul_lines_func (isCases) {
+
         // TODO, tooltip not work yet
         if (isCases) {
             pos_tooltip = "#tooltip_lines_left";
             div_pos = "mul_line_left";
+            char_title = "Chart-1: Trends in cases";
         } else {
-            pos_tooltip = "#tooltip_lines_right";
-            div_pos = "mul_line_right"; /// We just append
+            pos_tooltip = "#tooltip_lines_left";
+            div_pos = "mul_line_left"; /// We just append
+            char_title = "Chart-2: Trends in deaths";
         }
 
         // set the dimensions and margins of the graph
@@ -69,9 +69,18 @@
           .append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
-          .append("g")
-            .attr("transform",
-                  "translate(" + margin.left + "," + margin.top + ")");
+            .append("g")
+              .attr("transform",
+                    "translate(" + margin.left + "," + margin.top + ")");
+
+        svg.append("text")
+          .attr("class", "h2")
+          .attr("x", width/2)
+          .style("font-size", "20px")
+          .style("text-decoration", "underline")
+          .attr("y", 0 - (-20))
+          .attr("text-anchor", "middle")
+          .text(char_title);
 
         // Read the data
         d3.csv("data/us-states-trend.csv", function(data) {
@@ -146,11 +155,9 @@
                d3.select(pos_tooltip).style("opacity", 0)
              })
           })
-
       }
-      mul_lines_func(false)
       mul_lines_func(true)
-
+      mul_lines_func(false)
 
       </script>
     </section>
@@ -165,13 +172,11 @@
       <button type="button" onclick="update_mul_bars_next()">Next</button>
 
       <H1>Page-2: Cases comparison between states</H1>
-      <H2>Chart-1: Comparasion in cases</H2>
       <pre id="message-container"></pre>
 
       <!-- Create a div where the graph will take place -->
       <div id="tooltip_bar_left"></div>
       <div id="mul_bars_left"></div>
-      <H2>Chart-2: Comparasion in deaths</H2>
       <div id="tooltip_bar_right"></div>
       <div id="mul_bars_right"></div>
 
@@ -194,11 +199,13 @@
           {
             pos_tooltip = "#tooltip_bar_left";
             pos = "#mul_bars_left";
+            char_title = "Chart-1: Comparasion in cases";
           }
           else
           {
-            pos_tooltip = "#tooltip_bar_right";
-            pos = "#mul_bars_right";
+            pos_tooltip = "#tooltip_bar_left";
+            pos = "#mul_bars_left";
+            char_title = "Chart-2: Comparasion in deaths";
           }
 
           // set the dimensions and margins of the graph
@@ -214,6 +221,15 @@
             .append("g")
               .attr("transform",
                     "translate(" + margin.left + "," + margin.top + ")");
+
+          svg.append("text")
+            .attr("class", "h2")
+            .attr("x", width/2)
+            .style("font-size", "20px")
+            .style("text-decoration", "underline")
+            .attr("y", 0 - (-20))
+            .attr("text-anchor", "middle")
+            .text(char_title);
 
           // Parse the Data
           d3.csv("data/us-states-bar-map.csv", function(data) {
@@ -259,6 +275,10 @@
           svg.append("g")
             .call(d3.axisLeft(y));
 
+          var tooltip = d3.select("body").append("div")
+              .attr("class", "tooltip")
+              .style("opacity", 0);
+
           // Bars
           svg.selectAll("mybar")
             .data(data)
@@ -269,15 +289,30 @@
               .attr("width", x.bandwidth())
               .attr("height", d=> height - y(get_d_val(isCases, d)))
               .attr("fill", function(d){ return color(d.state) })
-              .on("mouseover", function(d,i) {
-                d3.select(pos_tooltip).style("opacity", 1)
-                  .style("left",(d3.event.pageX)+"px")
-                  .style("top",(d3.event.pageY)+"px")
-                  .html("Item #: "+i+", state: " + d.state + ", cases: " + d.cases + ", deaths: " + d.deaths);
+              .on("mouseover", function(d) {
+                  tooltip.transition()
+                      .duration(200)
+                      .style("opacity", .9);
+                  if (isCases) {
+                    tooltip.html("<h4>" + d.state + "</h4><table>"
+                        + "<tr><td>cases<td>" + d.cases + "</tr></td>"
+                        + "<tr><td>cass_percent<td>" + d.cases_percent + "</tr></td>")
+                        .style("left", (d3.event.pageX + 5) + "px")
+                        .style("top", (d3.event.pageY - 28) + "px");
+                  }
+                  else {
+                    tooltip.html("<h4>" + d.state + "</h4><table>"
+                        + "<tr><td>deaths<td>" + d.deaths + "</tr></td>"
+                        + "<tr><td>deaths_percent<td>" + d.deaths_percent + "</tr></td>")
+                        .style("left", (d3.event.pageX + 5) + "px")
+                        .style("top", (d3.event.pageY - 28) + "px");
+                  }
               })
-              .on("mouseout", function() {
-                d3.select(pos_tooltip).style("opacity", 0)
-              })
+              .on("mouseout", function(d) {
+                  tooltip.transition()
+                      .duration(500)
+                      .style("opacity", 0);
+              });
 
           })
       }
@@ -296,15 +331,11 @@
      <button type="button" onclick="update_mul_map_next()">Next</button>
 
       <H1>Page-4: Choropleth Map with Tooltips</H1>
-      <H2>Chart-1: Compare based on cases</H2>
       <pre id="message-container"></pre>
 
       <!-- Create a div where the graph will take place -->
       <div id="tooltip_map_left"></div>
       <div id="mul_map_left"></div>
-      <H2>Chart-2: Compare based on deaths</H2>
-      <div id="tooltip_map_right"></div>
-      <div id="mul_map_right"></div>
       <div id="tooltip"></div>
       <div id="legend"></div>
 
@@ -378,14 +409,14 @@
          }
          else
          {
-           pos_tooltip = "#tooltip_map_right";
-           pos = "#mul_map_right";
+           pos_tooltip = "#tooltip_map_left";
+           pos = "#mul_map_left";
          }
 
            // https://bl.ocks.org/wboykinm/dbbe50d1023f90d4e241712395c27fb3
            var margin = {top: 40, right: 40, bottom: 40, left: 40},
-               width = 900,// - margin.left - margin.right,
-               height = 400;// - margin.top - margin.bottom;
+               width = 850,// - margin.left - margin.right,
+               height = 450;// - margin.top - margin.bottom;
 
                var lowColor = '#f9f9f9'
                var highColor = '#bc2a66'
@@ -489,6 +520,23 @@
                            .duration(500)
                            .style("opacity", 0);
                    });
+                   if(isCases)
+                   {
+                     char_title = "Chart-1: Compare based on cases";
+                   }
+                   else
+                   {
+                     char_title = "Chart-2: Compare based on deaths";
+                   }
+                   svg.append("text")
+                     .attr("class", "h2")
+                     .attr("x", width/2)
+                     .style("font-size", "20px")
+                     .style("text-decoration", "underline")
+                     .attr("y", 0 - (-20))
+                     .attr("text-anchor", "middle")
+                     .text(char_title);
+                  console.log(char_title)
 
                    // add a legend
                      var w = 140, h = 300;
