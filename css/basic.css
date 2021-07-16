@@ -1,0 +1,27 @@
+
+/* Style for our header texts */
+
+
+h1{
+  font-size: 3em;
+  font-weight: 700;
+  color: #000000;
+}
+
+.tooltip h4{
+  margin:0;
+  font-size:16px;
+}
+
+.tooltip {
+  background:rgba(0,0,0,0.9);
+  position: absolute;
+  pointer-events: none;
+  border:1px solid grey;
+  border-radius:5px;
+  font-size:12px;
+  width:auto;
+  padding:4px;
+  color:white;
+  opacity:0;
+}
