@@ -6,6 +6,7 @@
 
 <!-- import d3.v4 -->
 <script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
 
   <head>
     <title>A whole picture on Covid-19 Cases and Deaths in USA</title>
@@ -155,6 +156,34 @@
                d3.select(pos_tooltip).style("opacity", 0)
              })
           })
+
+
+          // begin annotation
+          // Features of the annotation
+        const annotations = [
+          {
+            note: {
+              label: "From March 2020 to July 2021.",
+              title: "California's Cases trend"
+            },
+            x: 500,
+            y: 100,
+            dy: 0,
+            dx: -200,
+            color: ["#cc0000"],
+          }
+        ]
+
+        // Add annotation to the chart
+        const makeAnnotations = d3.annotation()
+          .annotations(annotations)
+
+          if (isCases) {
+              svg.append("g")
+                .call(makeAnnotations)
+          }
+
+          // end annotiation
       }
       mul_lines_func(true)
       mul_lines_func(false)
