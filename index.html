@@ -311,7 +311,41 @@
 
       <H1>Page-2: Cases comparison between states</H1>
       <pre id="message-container"></pre>
+      <div id="dataviz_builtWithD3"></div>
 
+      <script>
+      // To handle the sort option
+      // ------------------------------------
+      // Create data = list of groups
+      var allGroup = ["Ascending", "Descending", "Alphabetical"]
+      // Initialize the button
+      var dropdownButton = d3.select("#dataviz_builtWithD3")
+        .append('select')
+
+      // add the options to the button
+      dropdownButton // Add a button
+        .selectAll('myOptions') // Next 4 lines add 6 options = 6 colors
+       	.data(allGroup)
+        .enter()
+      	.append('option')
+        .text(function (d) { return d; }) // text showed in the menu
+        .attr("value", function (d) { return d; }) // corresponding value returned by the button
+
+      // Initialize a circle
+      var bar_sort_option = "Ascending";
+      //var bar_sort_option = "Descending";
+      //var bar_sort_option = "Alphabetical";
+      // When the button is changed, run the updateChart function
+      dropdownButton.on("change", function(d) {
+          // recover the option that has been chosen
+          bar_sort_option = d3.select(this).property("value");
+          console.log("selectedOption has been updated to " + bar_sort_option);
+          //d3.selectAll('#mul_bars_left').remove();
+          bars_func(true);
+          bars_func(false);
+      })
+
+      </script>
       <!-- Create a div where the graph will take place -->
       <div id="tooltip_bar_left"></div>
       <div id="mul_bars_left"></div>
@@ -373,7 +407,18 @@
           d3.csv("data/us-states-bar-map.csv", function(data) {
             // sort data
             data.sort(function(b, a) {
-              return get_d_val(isCases, a) - get_d_val(isCases, b);
+              if (bar_sort_option == "Ascending") {
+                console.log("bar_sort_option is " + bar_sort_option);
+                return get_d_val(isCases, a) - get_d_val(isCases, b);
+              } else if (bar_sort_option == "Descending") {
+                console.log("bar_sort_option is " + bar_sort_option);
+                return get_d_val(isCases, b) - get_d_val(isCases, a);
+              } else if (bar_sort_option == "Alphabetical") {
+                console.log("bar_sort_option is " + bar_sort_option);
+                return a.state > b.state;
+              } else {
+                console.log("A wrong option. It never happen:bar_sort_option = " + bar_sort_option);
+              }
             });
 
           // color palette
