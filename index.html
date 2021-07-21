@@ -310,6 +310,7 @@
       <button type="button" onclick="update_mul_bars_next()">Next</button>
 
       <H1>Page-2: Cases comparison between states</H1>
+
       <pre id="message-container"></pre>
       <div id="dataviz_builtWithD3"></div>
 
@@ -317,7 +318,7 @@
       // To handle the sort option
       // ------------------------------------
       // Create data = list of groups
-      var allGroup = ["Ascending", "Descending", "Alphabetical"]
+      var allGroup = ["Descending", "Ascending",  "Alphabetical"]
       // Initialize the button
       var dropdownButton = d3.select("#dataviz_builtWithD3")
         .append('select')
@@ -409,10 +410,10 @@
             data.sort(function(b, a) {
               if (bar_sort_option == "Ascending") {
                 console.log("bar_sort_option is " + bar_sort_option);
-                return get_d_val(isCases, a) - get_d_val(isCases, b);
+                return get_d_val(isCases, b) - get_d_val(isCases, a);
               } else if (bar_sort_option == "Descending") {
                 console.log("bar_sort_option is " + bar_sort_option);
-                return get_d_val(isCases, b) - get_d_val(isCases, a);
+                return get_d_val(isCases, a) - get_d_val(isCases, b);
               } else if (bar_sort_option == "Alphabetical") {
                 console.log("bar_sort_option is " + bar_sort_option);
                 return a.state > b.state;
@@ -511,7 +512,6 @@
 
       <script>
 
-
        function map_func (isCases) {
          if(isCases)
          {
@@ -580,7 +580,7 @@
                        if ( d.state == jsonState) {
                            // Copy the data value into the JSON
                            json.features[j].properties.value = d.value;
-                           
+
                            if (isCases) {
                              json.features[j].properties.color = d.color;
                              json.features[j].properties.cases = d.cases;
