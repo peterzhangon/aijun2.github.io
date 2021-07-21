@@ -270,14 +270,16 @@
         const annotations = [
           {
             note: {
-              label: "From March 2020 to July 2021.",
-              title: "California's Cases trend"
+              label: "From 2020-01 to 2021-07.",
+              title: "California",
+              wrap: 0,  // try something smaller to see text split in several lines
+              padding: 2   // More = text lower
             },
             x: 500,
             y: 100,
             dy: 0,
             dx: -200,
-            color: ["#cc0000"],
+            color: ["red"],
           }
         ]
 
