@@ -11,6 +11,7 @@
   <head>
     <title>A whole picture on Covid-19 Cases and Deaths in USA</title>
   </head>
+
   <body>
 
   <!-- page 0: home page overview -->
@@ -37,6 +38,125 @@
     <div id="mul_line_left"></div>
 
     <script>
+
+    all_colors_based_on_idx = {
+      0: "#1b70fc",
+      1: "#faff16",
+      2: "#d50527",
+      3: "#158940",
+      4: "#f898fd",
+      5: "#24c9d7",
+      6: "#cb9b64",
+      7: "#866888",
+      8: "#22e67a",
+      9: "#e509ae",
+      10: "#9dabfa",
+      11: "#437e8a",
+      12: "#b21bff",
+      13: "#ff7b91",
+      14: "#94aa05",
+      15: "#ac5906",
+      16: "#82a68d",
+      17: "#fe6616",
+      18: "#7a7352",
+      19: "#f9bc0f",
+      20: "#b65d66",
+      21: "#07a2e6",
+      22: "#c091ae",
+      23: "#8a91a7",
+      24: "#88fc07",
+      25: "#ea42fe",
+      26: "#9e8010",
+      27: "#10b437",
+      28: "#c281fe",
+      29: "#f92b75",
+      30: "#07c99d",
+      31: "#a946aa",
+      32: "#bfd544",
+      33: "#16977e",
+      34: "#ff6ac8",
+      35: "#a88178",
+      36: "#5776a9",
+      37: "#678007",
+      38: "#fa9316",
+      39: "#85c070",
+      40: "#6aa2a9",
+      41: "#989e5d",
+      42: "#fe9169",
+      43: "#cd714a",
+      44: "#6ed014",
+      45: "#c5639c",
+      46: "#c23271",
+      47: "#698ffc",
+      48: "#678275",
+      49: "#c5a121",
+      50: "#a978ba",
+      51: "#ee534e",
+      52: "#d24506",
+      53: "#59c3fa",
+      54: "#ca7b0a",
+      55: "#6f7385"
+      };
+
+      all_colors_based_on_state = {
+        "Alabama":                        "#1b70fc",
+        "Alaska":                         "#faff16",
+        "Arizona":                        "#d50527",
+        "Arkansas":                       "#158940",
+        "California":                     "#f898fd",
+        "Colorado":                       "#24c9d7",
+        "Connecticut":                    "#cb9b64",
+        "Delaware":                       "#866888",
+        "District of Columbia":           "#22e67a",
+        "Florida":                        "#e509ae",
+        "Georgia":                        "#9dabfa",
+        "Guam":                           "#437e8a",
+        "Hawaii":                         "#b21bff",
+        "Idaho":                          "#ff7b91",
+        "Illinois":                       "#94aa05",
+        "Indiana":                        "#ac5906",
+        "Iowa":                           "#82a68d",
+        "Kansas":                         "#fe6616",
+        "Kentucky":                       "#7a7352",
+        "Louisiana":                      "#f9bc0f",
+        "Maine":                          "#b65d66",
+        "Maryland":                       "#07a2e6",
+        "Massachusetts":                  "#c091ae",
+        "Michigan":                       "#8a91a7",
+        "Minnesota":                      "#88fc07",
+        "Mississippi":                    "#ea42fe",
+        "Missouri":                       "#9e8010",
+        "Montana":                        "#10b437",
+        "Nebraska":                       "#c281fe",
+        "Nevada":                         "#f92b75",
+        "New Hampshire":                  "#07c99d",
+        "New Jersey":                     "#a946aa",
+        "New Mexico":                     "#bfd544",
+        "New York":                       "#16977e",
+        "North Carolina":                 "#ff6ac8",
+        "North Dakota":                   "#a88178",
+        "Northern Mariana Islands":       "#5776a9",
+        "Ohio":                           "#678007",
+        "Oklahoma":                       "#fa9316",
+        "Oregon":                         "#85c070",
+        "Pennsylvania":                   "#6aa2a9",
+        "Puerto Rico":                    "#989e5d",
+        "Rhode Island":                   "#fe9169",
+        "South Carolina":                 "#cd714a",
+        "South Dakota":                   "#6ed014",
+        "Tennessee":                      "#c5639c",
+        "Texas":                          "#c23271",
+        "Utah":                           "#698ffc",
+        "Vermont":                        "#678275",
+        "Virgin Islands":                 "#c5a121",
+        "Virginia":                       "#a978ba",
+        "Washington":                     "#ee534e",
+        "West Virginia":                  "#d24506",
+        "Wisconsin":                      "#59c3fa",
+        "Wyoming":                        "#ca7b0a"
+        };
+
+      // private
       function get_d_val(isCases, d) {
         if(isCases)
         {
@@ -47,16 +167,18 @@
           return d.deaths;
         }
       }
+
+      // public
       function mul_lines_func (isCases) {
 
         // TODO, tooltip not work yet
         if (isCases) {
             pos_tooltip = "#tooltip_lines_left";
-            div_pos = "mul_line_left";
+            div_pos = "#mul_line_left";
             char_title = "Chart-1: Trends in cases";
         } else {
             pos_tooltip = "#tooltip_lines_left";
-            div_pos = "mul_line_left"; /// We just append
+            div_pos = "#mul_line_left"; /// We just append
             char_title = "Chart-2: Trends in deaths";
         }
 
@@ -66,7 +188,7 @@
           height = 300 - margin.top - margin.bottom;
 
         // append the svg object to the body of the page
-        var svg = d3.select("#" + div_pos)
+        var svg = d3.select(div_pos)
           .append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
@@ -117,28 +239,13 @@
           // color palette
           var res = sumstat.map(function(d){ return d.key }) // list of group names
 
-          var color = d3.scaleOrdinal()
-            .domain(res)
-            .range(["#1b70fc", "#faff16", "#d50527", "#158940", "#f898fd", "#24c9d7", "#cb9b64", "#866888",
-            "#22e67a", "#e509ae", "#9dabfa", "#437e8a", "#b21bff", "#ff7b91", "#94aa05", "#ac5906", "#82a68d", "#fe6616",
-            "#7a7352", "#f9bc0f", "#b65d66", "#07a2e6", "#c091ae", "#8a91a7", "#88fc07", "#ea42fe", "#9e8010", "#10b437",
-            "#c281fe", "#f92b75", "#07c99d", "#a946aa", "#bfd544", "#16977e", "#ff6ac8", "#a88178", "#5776a9", "#678007",
-            "#fa9316", "#85c070", "#6aa2a9", "#989e5d", "#fe9169", "#cd714a", "#6ed014", "#c5639c", "#c23271", "#698ffc",
-            "#678275", "#c5a121", "#a978ba", "#ee534e", "#d24506", "#59c3fa", "#ca7b0a", "#6f7385", "#9a634a", "#48aa6f",
-            "#ad9ad0", "#d7908c", "#6a8a53", "#8c46fc", "#8f5ab8", "#fd1105", "#7ea7cf", "#d77cd1", "#a9804b", "#0688b4",
-            "#6a9f3e", "#ee8fba", "#a67389", "#9e8cfe", "#bd443c", "#6d63ff", "#d110d5", "#798cc3", "#df5f83", "#b1b853",
-            "#bb59d8", "#1d960c", "#867ba8", "#18acc9", "#25b3a7", "#f3db1d", "#938c6d", "#936a24", "#a964fb", "#92e460",
-            "#a05787", "#9c87a0", "#20c773", "#8b696d", "#78762d", "#e154c6", "#40835f", "#d73656", "#1afd5c", "#c4f546",
-            "#3d88d8", "#bd3896", "#1397a3", "#f940a5", "#66aeff", "#d097e7", "#fe6ef9", "#d86507", "#8b900a", "#d47270",
-            "#e8ac48", "#cf7c97", "#cebb11", "#718a90", "#e78139", "#ff7463", "#bea1fd"])
-
           // Draw the line
           svg.selectAll(".line")
             .data(sumstat)
             .enter()
             .append("path")
             .attr("fill", "none")
-            .attr("stroke", function(d){return color(d.values[0].state) })
+            .attr("stroke", function(d){return all_colors_based_on_state[d.values[0].state] })
             .attr("stroke-width", 1.5)
             .attr("d", function(d){
               return d3.line()
@@ -270,21 +377,6 @@
           // color palette
           var res = data.map(function(d){ return d.state }) // list of group names
 
-          var color = d3.scaleOrdinal()
-            .domain(res)
-            .range(["#1b70fc", "#faff16", "#d50527", "#158940", "#f898fd", "#24c9d7", "#cb9b64", "#866888",
-            "#22e67a", "#e509ae", "#9dabfa", "#437e8a", "#b21bff", "#ff7b91", "#94aa05", "#ac5906", "#82a68d", "#fe6616",
-            "#7a7352", "#f9bc0f", "#b65d66", "#07a2e6", "#c091ae", "#8a91a7", "#88fc07", "#ea42fe", "#9e8010", "#10b437",
-            "#c281fe", "#f92b75", "#07c99d", "#a946aa", "#bfd544", "#16977e", "#ff6ac8", "#a88178", "#5776a9", "#678007",
-              "#fa9316", "#85c070", "#6aa2a9", "#989e5d", "#fe9169", "#cd714a", "#6ed014", "#c5639c", "#c23271", "#698ffc",
-              "#678275", "#c5a121", "#a978ba", "#ee534e", "#d24506", "#59c3fa", "#ca7b0a", "#6f7385", "#9a634a", "#48aa6f",
-              "#ad9ad0", "#d7908c", "#6a8a53", "#8c46fc", "#8f5ab8", "#fd1105", "#7ea7cf", "#d77cd1", "#a9804b", "#0688b4",
-              "#6a9f3e", "#ee8fba", "#a67389", "#9e8cfe", "#bd443c", "#6d63ff", "#d110d5", "#798cc3", "#df5f83", "#b1b853",
-              "#bb59d8", "#1d960c", "#867ba8", "#18acc9", "#25b3a7", "#f3db1d", "#938c6d", "#936a24", "#a964fb", "#92e460",
-              "#a05787", "#9c87a0", "#20c773", "#8b696d", "#78762d", "#e154c6", "#40835f", "#d73656", "#1afd5c", "#c4f546",
-              "#3d88d8", "#bd3896", "#1397a3", "#f940a5", "#66aeff", "#d097e7", "#fe6ef9", "#d86507", "#8b900a", "#d47270",
-              "#e8ac48", "#cf7c97", "#cebb11", "#718a90", "#e78139", "#ff7463", "#bea1fd"])
-
           // X axis
           var x = d3.scaleBand()
             .range([ 0, width ])
@@ -317,7 +409,7 @@
               .attr("y", d=> y(get_d_val(isCases, d)))
               .attr("width", x.bandwidth())
               .attr("height", d=> height - y(get_d_val(isCases, d)))
-              .attr("fill", function(d){ return color(d.state) })
+              .attr("fill", function(d){return all_colors_based_on_idx[d.color]})
               .on("mouseover", function(d) {
                   tooltip.transition()
                       .duration(200)
@@ -371,64 +463,7 @@
       <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 
       <script>
-       tmp_color = {
-         0: "#1b70fc",
-         1: "#faff16",
-         2: "#d50527",
-         3: "#158940",
-         4: "#f898fd",
-         5: "#24c9d7",
-         6: "#cb9b64",
-         7: "#866888",
-         8: "#22e67a",
-         9: "#e509ae",
-         10: "#9dabfa",
-         11: "#437e8a",
-         12: "#b21bff",
-         13: "#ff7b91",
-         14: "#94aa05",
-         15: "#ac5906",
-         16: "#82a68d",
-         17: "#fe6616",
-         18: "#7a7352",
-         19: "#f9bc0f",
-         20: "#b65d66",
-         21: "#07a2e6",
-         22: "#c091ae",
-         23: "#8a91a7",
-         24: "#88fc07",
-         25: "#ea42fe",
-         26: "#9e8010",
-         27: "#10b437",
-         28: "#c281fe",
-         29: "#f92b75",
-         30: "#07c99d",
-         31: "#a946aa",
-         32: "#bfd544",
-         33: "#16977e",
-         34: "#ff6ac8",
-         35: "#a88178",
-         36: "#5776a9",
-         37: "#678007",
-         38: "#fa9316",
-         39: "#85c070",
-         40: "#6aa2a9",
-         41: "#989e5d",
-         42: "#fe9169",
-         43: "#cd714a",
-         44: "#6ed014",
-         45: "#c5639c",
-         46: "#c23271",
-         47: "#698ffc",
-         48: "#678275",
-         49: "#c5a121",
-         50: "#a978ba",
-         51: "#ee534e",
-         52: "#d24506",
-         53: "#59c3fa",
-         54: "#ca7b0a",
-         55: "#6f7385"
-         };
+
 
        function map_func (isCases) {
          if(isCases)
@@ -498,6 +533,7 @@
                        if ( d.state == jsonState) {
                            // Copy the data value into the JSON
                            json.features[j].properties.value = d.value;
+                           
                            if (isCases) {
                              json.features[j].properties.color = d.color;
                              json.features[j].properties.cases = d.cases;
