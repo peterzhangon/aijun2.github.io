@@ -342,6 +342,7 @@
           bar_sort_option = d3.select(this).property("value");
           console.log("selectedOption has been updated to " + bar_sort_option);
           //d3.selectAll('#mul_bars_left').remove();
+          //d3.select("#section_mul_bars").html("<h1> peter</h1>");
           bars_func(true);
           bars_func(false);
       })
@@ -376,11 +377,14 @@
           }
           else
           {
-            pos_tooltip = "#tooltip_bar_left";
-            pos = "#mul_bars_left";
+            pos_tooltip = "#tooltip_bar_right";
+            pos = "#mul_bars_right";
             char_title = "Chart-2: Comparasion in deaths";
           }
 
+          // Re-draw
+          d3.select(pos).selectAll("svg").remove();
+          
           // set the dimensions and margins of the graph
           var margin = {top: 30, right: 30, bottom: 70, left: 60},
               width = 1260 - margin.left - margin.right,
