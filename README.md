@@ -76,3 +76,9 @@ https://bl.ocks.org/d3noob/7030f35b72de721622b8
 # Annotation
 
 https://bl.ocks.org/susielu/63269cf8ec84497920f2b7ef1ac85039
+
+# Update bar chart dynamically
+
+https://bl.ocks.org/HarryStevens/de1069536e00256d7aa82299fac0f3d5
+
+
