@@ -37,9 +37,12 @@
     <div id="tooltip_lines_left"></div>
     <div id="mul_line_left"></div>
 
+    <div>
+      <svg id="legend_mul_lines" height=300 width=950></svg>
+    </div>
     <script>
 
-    all_colors_based_on_idx = {
+    var all_colors_based_on_idx = {
       0: "#1b70fc",
       1: "#faff16",
       2: "#d50527",
@@ -98,7 +101,7 @@
       55: "#6f7385"
       };
 
-      all_colors_based_on_state = {
+      var all_colors_based_on_state = {
         "Alabama":                        "#1b70fc",
         "Alaska":                         "#faff16",
         "Arizona":                        "#d50527",
@@ -155,6 +158,84 @@
         "Wisconsin":                      "#59c3fa",
         "Wyoming":                        "#ca7b0a"
         };
+        var all_states = [
+          "Alabama",
+          "Alaska",
+          "Arizona",
+          "Arkansas",
+          "California",
+          "Colorado",
+          "Connecticut",
+          "Delaware"];
+        var all_states_g1 = [
+          "Alabama",
+          "Alaska",
+          "Arizona",
+          "Arkansas",
+          "California",
+          "Colorado",
+          "Connecticut",
+          "Delaware"];
+      var all_states_g2 = [
+          "District of Columbia",
+          "Florida",
+          "Georgia",
+          "Guam",
+          "Hawaii",
+          "Idaho",
+          "Illinois",
+          "Indiana"];
+      var all_states_g3 = [
+          "Iowa",
+          "Kansas",
+          "Kentucky",
+          "Louisiana",
+          "Maine",
+          "Maryland",
+          "Massachusetts",
+          "Michigan"];
+
+      var all_states_g4 = [
+          "Minnesota",
+          "Mississippi",
+          "Missouri",
+          "Montana",
+          "Nebraska",
+          "Nevada",
+          "New Hampshire",
+          "New Jersey"];
+
+      var all_states_g5 = [
+          "New Mexico",
+          "New York",
+          "North Carolina",
+          "North Dakota",
+          "Northern Mariana Islands",
+          "Ohio",
+          "Oklahoma",
+          "Oregon"];
+
+      var all_states_g6 = [
+          "Pennsylvania",
+          "Puerto Rico",
+          "Rhode Island",
+          "South Carolina",
+          "South Dakota",
+          "Tennessee",
+          "Texas",
+          "Utah"];
+
+        var all_states_g7 = [// 6 * 8 = 48 + 7 = 55
+          "Vermont",
+          "Virgin Islands",
+          "Virginia",
+          "Washington",
+          "West Virginia",
+          "Wisconsin",
+          "Wyoming"
+          ];
+
+      var state_groups = [all_states_g1, all_states_g2, all_states_g3, all_states_g4, all_states_g5, all_states_g6, all_states_g7];
 
       // private
       function get_d_val(isCases, d) {
@@ -298,6 +379,49 @@
       mul_lines_func(false)
 
       </script>
+      <!-- Create a div where the graph will take place -->
+
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script>
+// select the svg area
+var Svg = d3.select("#legend_mul_lines")
+// create a list of keys
+var keys = ["Mister A", "Brigitte", "Eleonore", "Another friend", "Batman", ]
+// Usually you have a color scale in your chart already
+var color = d3.scaleOrdinal()
+  .domain(all_states)
+  .range(d3.schemeSet2);
+
+  // Add one dot in the legend for each name.
+  i = 6;
+  for (i = 0; i < 8; i++) {
+  tmp_states = state_groups[i];
+  var size = 20
+  Svg.selectAll("mydots")
+    .data(tmp_states)
+    .enter()
+    .append("circle")
+    .attr("cx", 100 + i * 100)
+    .attr("cy", function(d,i){ return 100 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr("r", 7)
+    .style("fill", function(d){return all_colors_based_on_state[d]})
+
+
+  // Add one dot in the legend for each name.
+  Svg.selectAll("mylabels")
+    .data(tmp_states)
+    .enter()
+    .append("text")
+    .attr("x", 120 + i * 100)
+    .attr("y", function(d,i){ return 100 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
+    .style("fill", function(d){ return all_colors_based_on_state[d]})
+    .text(function(d){ return d.substring(0, 7)})
+    .attr("text-anchor", "left")
+    .style("alignment-baseline", "middle")
+  }
+</script>
+
+
     </section>
 
 
@@ -384,7 +508,7 @@
 
           // Re-draw
           d3.select(pos).selectAll("svg").remove();
-          
+
           // set the dimensions and margins of the graph
           var margin = {top: 30, right: 30, bottom: 70, left: 60},
               width = 1260 - margin.left - margin.right,
@@ -503,7 +627,7 @@
      <button type="button" onclick="update_mul_map_pre()">Previous</button>
      <button type="button" onclick="update_mul_map_next()">Next</button>
 
-      <H1>Page-4: Choropleth Map with Tooltips</H1>
+      <H1>Page-3: Choropleth Map with Tooltips</H1>
       <pre id="message-container"></pre>
 
       <!-- Create a div where the graph will take place -->
