@@ -82,3 +82,6 @@ https://bl.ocks.org/susielu/63269cf8ec84497920f2b7ef1ac85039
 https://bl.ocks.org/HarryStevens/de1069536e00256d7aa82299fac0f3d5
 
 
+# two charts side by side
+
+https://bl.ocks.org/seasmith/10bd767bd8785929e116bae18e7356eb
