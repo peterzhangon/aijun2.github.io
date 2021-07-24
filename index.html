@@ -31,7 +31,6 @@
     <button type="button" onclick="update_mul_lines_next()">Next</button>
 
     <H1>Page-1: Covid-19 Trends</H1>
-    <pre id="message-container"></pre>
 
     <!-- Create a div where the graph will take place -->
     <div id="tooltip_lines_left"></div>
@@ -435,7 +434,6 @@ var color = d3.scaleOrdinal()
 
       <H1>Page-2: Cases comparison between states</H1>
 
-      <pre id="message-container"></pre>
       <div id="dataviz_builtWithD3"></div>
 
       <script>
@@ -628,30 +626,50 @@ var color = d3.scaleOrdinal()
      <button type="button" onclick="update_mul_map_next()">Next</button>
 
       <H1>Page-3: Choropleth Map with Tooltips</H1>
-      <pre id="message-container"></pre>
 
       <!-- Create a div where the graph will take place -->
+      <svg width="1200" height="650">
+          <g id="legend_map_left" transform="translate(0, 0)">
+          </g>
+          <g id="mul_map_left" transform="translate(160, 30)">
+          </g>
+      </svg>
+      <svg width="1200" height="650">
+          <g id="legend_map_right" transform="translate(0, 0)">
+          </g>
+          <g id="mul_map_right" transform="translate(160, 30)">
+          </g>
+      </svg>
       <div id="tooltip_map_left"></div>
-      <div id="mul_map_left"></div>
-      <div id="tooltip"></div>
-      <div id="legend"></div>
 
       <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 
       <script>
+      // +++++++++++++++++++legend of the map+++++++++++++++++++++++++++
+      function split(left, right, parts) {
+          var result = [],
+              delta = (right - left) / (parts - 1);
+          while (left < right) {
+              result.push(left);
+              left += delta;
+          }
+          result.push(right);
+          return result;
+      }
 
        function map_func (isCases) {
          if(isCases)
          {
            pos_tooltip = "#tooltip_map_left";
            pos = "#mul_map_left";
+           legend_map = "#legend_map_left";
          }
          else
          {
            pos_tooltip = "#tooltip_map_left";
-           pos = "#mul_map_left";
+           pos = "#mul_map_right";
+           legend_map = "#legend_map_right";
          }
-
            // https://bl.ocks.org/wboykinm/dbbe50d1023f90d4e241712395c27fb3
            var margin = {top: 40, right: 40, bottom: 40, left: 40},
                width = 850,// - margin.left - margin.right,
@@ -670,7 +688,8 @@ var color = d3.scaleOrdinal()
                  .projection(projection);    // tell path generator to use albersUsa projection
 
                // Create SVG element and append map to the SVG
-               var svg = d3.select(pos)
+               var g_map = d3.select(pos).append("g");
+               var svg = g_map
                    .append("svg")
                    .attr("width", width + margin.left + margin.right)
                    .attr("height", height + margin.top + margin.bottom);
@@ -710,12 +729,12 @@ var color = d3.scaleOrdinal()
                            json.features[j].properties.value = d.value;
 
                            if (isCases) {
-                             json.features[j].properties.color = d.color;
+                             //json.features[j].properties.color = d.color;
                              json.features[j].properties.cases = d.cases;
                              json.features[j].properties.cases_percent = d.cases_percent;
                            }
                            else {
-                             json.features[j].properties.color = d.color;
+                             //json.features[j].properties.color = d.color;
                              json.features[j].properties.deaths = d.deaths;
                              json.features[j].properties.deaths_percent = d.deaths_percent;
                            }
@@ -777,53 +796,59 @@ var color = d3.scaleOrdinal()
                      .attr("text-anchor", "middle")
                      .text(char_title);
                   console.log(char_title)
-
-                   // add a legend
-                     var w = 140, h = 300;
-
-                     var key = d3.select("path")
-                         .append("svg")
-                           .attr("width", w)
-                           .attr("height", h)
-                           .attr("class", "legend");
-
-                       var legend = key.append("defs")
-                           .append("svg:linearGradient")
-                           .attr("id", "gradient")
-                           .attr("x1", "100%")
-                           .attr("y1", "0%")
-                           .attr("x2", "100%")
-                           .attr("y2", "100%")
-                           .attr("spreadMethod", "pad");
-
-                       legend.append("stop")
-                           .attr("offset", "0%")
-                           .attr("stop-color", highColor)
-                           .attr("stop-opacity", 1);
-
-                     legend.append("stop")
-                           .attr("offset", "100%")
-                           .attr("stop-color", lowColor)
-                           .attr("stop-opacity", 1);
-
-                       key.append("rect")
-                           .attr("width", w - 100)
-                           .attr("height", h)
-                           .style("fill", "url(#gradient)")
-                           .attr("transform", "translate(0,10)");
-
-                       var y = d3.scaleLinear()
-                           .range([h, 0])
-                           .domain([minVal, maxVal]);
-
-                       var yAxis = d3.axisRight(y);
-
-                       key.append("g")
-                           .attr("class", "y axis")
-                           .attr("transform", "translate(41,10)")
-                           .call(yAxis)
                });
-           });
+
+               // select the svg area
+               if(isCases)
+               {
+                 legend_map = "#legend_map_left";
+               }
+               else
+               {
+                 legend_map = "#legend_map_right";
+               }
+               var Svg = d3.select(legend_map);
+               console.log("legend_map = " + legend_map);
+               map_legent_values = split(minVal, maxVal, 9);
+               console.log("map legend:")
+               console.log(map_legent_values);
+
+                 // Add one dot in the legend for each name.
+                 i = 6;
+                 for (i = 0; i < 1; i++) {
+                 tmp_states = state_groups[i];
+                 var size = 20
+                 Svg.selectAll("mydots")
+                   .data(tmp_states)
+                   .enter()
+                   .append("circle")
+                   .attr("cx", 100 + i * 100)
+                   .attr("cy", function(d,i){ return 100 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
+                   .attr("r", 7)
+                   .style("fill", function(d, i){return ramp(map_legent_values[8 - i])})
+
+                 // http://bl.ocks.org/zanarmstrong/05c1e95bf7aa16c4768e
+                 format_s = d3.format("0.3s")
+
+                 // Add one dot in the legend for each name.
+                 Svg.selectAll("mylabels")
+                   .data(tmp_states)
+                   .enter()
+                   .append("text")
+                   .attr("x", 120 + i * 100)
+                   .attr("y", function(d,i){ return 100 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
+                   .style("fill", function(d, i){ return ramp(map_legent_values[8 - i])})
+                   .text(function(d, i){ return format_s(Math.trunc(map_legent_values[8 - i]))})
+                   .attr("text-anchor", "left")
+                   .style("alignment-baseline", "middle")
+                 }
+
+           }
+
+         );
+
+
+
        }
 
        map_func (true);
