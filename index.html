@@ -21,6 +21,23 @@
     <button type="button", id="home_pre_button" >Previous</button>
     <button type="button" onclick="update_home_next()">Next</button>
     <H1>Page-1: Overview of Covid-19 status in USA</H1>
+    <h2><br/>Contents</h2>
+
+    <ul>
+        <li>Page-1: Overview of Covid-19 status in USA</li>
+        <li>Page-2: Covid-19 Trends</li>
+        <li>Page-3: Cases Comparison Between States</li>
+        <li>Page-4: Choropleth Map with Tooltips</li>
+        <li>Page-5: Thank you</li>
+    </ul>
+
+    <h2><br/>Related Resources</h2>
+    <ul>
+        <li><a href='https://public.tableau.com/app/profile/aijun2/viz/project_dashboard_16237246680960/Dashboard' target='_blank'>Overview of US States Covid-19 Cases and Deaths based on data from Jan. 2020 to June 2021 via Tableau</a></li>
+        <li><a href='https://github.com/nytimes/covid-19-data/blob/master/us-states.csv' target='_blank'>Data source</a></li>
+        <li><a href='https://github.com/nytimes/covid-19-data/blob/master/us-states.csv' target='_blank'>Source code of this project</a></li>
+    </ul>
+
   </section>
 
   <!-- page 1: multiple lines -->
@@ -810,8 +827,6 @@ var color = d3.scaleOrdinal()
                var Svg = d3.select(legend_map);
                console.log("legend_map = " + legend_map);
                map_legent_values = split(minVal, maxVal, 9);
-               console.log("map legend:")
-               console.log(map_legent_values);
 
                  // Add one dot in the legend for each name.
                  i = 6;
@@ -864,6 +879,21 @@ var color = d3.scaleOrdinal()
       <button type="button" onclick="update_last_page_pre()">Previous</button>
       <button type="button", id="last_next_button">Next</button>
       <H1>Page-5: Thank you</H1>
+
+      <h2><br/>Contact</h2>
+
+      <ul>
+          <li>Peter Zhang</li>
+          <li>aijun2@illinois.edu</li>
+          <li>peterzhangon@gmail.com</li>
+      </ul>
+
+      <h2><br/>Related Resources</h2>
+      <ul>
+          <li><a href='https://cs.illinois.edu/academics/graduate/professional-mcs/online-master-computer-science' target='_blank'>MCS program at UIUC</a></li>
+          <li><a href='https://github.com/nytimes/covid-19-data/blob/master/us-states.csv' target='_blank'>CS 498 Data Visualization</a></li>
+      </ul>
+
     </section>
 
     <script>
