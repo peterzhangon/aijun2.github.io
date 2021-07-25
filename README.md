@@ -85,3 +85,8 @@ https://bl.ocks.org/HarryStevens/de1069536e00256d7aa82299fac0f3d5
 # two charts side by side
 
 https://bl.ocks.org/seasmith/10bd767bd8785929e116bae18e7356eb
+
+# Checkbox
+https://bl.ocks.org/Lulkafe/c77a36d5efb603e788b03eb749a4a714
+
+https://codepen.io/elmahdim/pen/hlmri
