@@ -376,8 +376,8 @@
               selected_info = d.values[d.values.length - 1];
 
               tooltip.html("<h4>" + selected_info["state"] + "</h4><table>"
-                  + "<tr><td>The last cases<td>" + format_num(selected_info["cases"]) + "</tr></td>"
-                  + "<tr><td>The last deaths<td>" + format_num(selected_info["deaths"]) + "</tr></td>")
+                  + "<tr><td>The latest cases<td>" + format_num(selected_info["cases"]) + "</tr></td>"
+                  + "<tr><td>The latest deaths<td>" + format_num(selected_info["deaths"]) + "</tr></td>")
                   .style("left", (d3.event.pageX + 5) + "px")
                   .style("top", (d3.event.pageY - 28) + "px");
 
