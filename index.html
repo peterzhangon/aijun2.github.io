@@ -384,8 +384,9 @@
                 d3.select(this).style('opacity', .5);
             })
             .on("mouseout", function() {
-               d3.select(pos_tooltip).style("opacity", 0)
-               d3.select(this).style('opacity', 1);
+              tooltip.transition()
+                  .duration(500)
+                  .style("opacity", 0);
                d3.select(this).style('opacity', 1);
              })
           })
@@ -429,12 +430,6 @@
 <script>
 // select the svg area
 var Svg = d3.select("#legend_mul_lines")
-// create a list of keys
-var keys = ["Mister A", "Brigitte", "Eleonore", "Another friend", "Batman", ]
-// Usually you have a color scale in your chart already
-var color = d3.scaleOrdinal()
-  .domain(all_states)
-  .range(d3.schemeSet2);
 
   // Add one dot in the legend for each name.
   i = 6;
