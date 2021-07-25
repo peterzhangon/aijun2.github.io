@@ -68,6 +68,9 @@
 
     // http://bl.ocks.org/zanarmstrong/05c1e95bf7aa16c4768e
     format_num = d3.format(",d")
+    var tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
 
     var all_colors_based_on_idx = {
       0: "#1b70fc",
@@ -347,6 +350,8 @@
           // color palette
           var res = sumstat.map(function(d){ return d.key }) // list of group names
 
+
+
           // Draw the line
           svg.selectAll(".line")
             .data(sumstat)
@@ -362,20 +367,28 @@
                 (d.values)
             })
             .on("mouseover", function(d,i) { // TODO, tooltip not work yet
-              d3.select(pos_tooltip).style("opacity", 1)
-                .style("left",(d3.event.pageX)+"px")
-                .style("top",(d3.event.pageY)+"px")
-                .html("Item #: "+i+", state: " + d.state + ", cases: " + format_num(d.cases) + ", deaths: " + format_num(d.deaths));
+
+              tooltip.transition()
+                  .duration(200)
+                  .style("opacity", .9);
+              d3.select(this).style('opacity', .5);
+
+              selected_info = d.values[d.values.length - 1];
+
+              tooltip.html("<h4>" + selected_info["state"] + "</h4><table>"
+                  + "<tr><td>The last cases<td>" + format_num(selected_info["cases"]) + "</tr></td>"
+                  + "<tr><td>The last deaths<td>" + format_num(selected_info["deaths"]) + "</tr></td>")
+                  .style("left", (d3.event.pageX + 5) + "px")
+                  .style("top", (d3.event.pageY - 28) + "px");
 
                 d3.select(this).style('opacity', .5);
-
             })
             .on("mouseout", function() {
                d3.select(pos_tooltip).style("opacity", 0)
                d3.select(this).style('opacity', 1);
+               d3.select(this).style('opacity', 1);
              })
           })
-
 
           // begin annotation
           // Features of the annotation
@@ -602,10 +615,6 @@ var color = d3.scaleOrdinal()
           svg.append("g")
             .call(d3.axisLeft(y));
 
-          var tooltip = d3.select("body").append("div")
-              .attr("class", "tooltip")
-              .style("opacity", 0);
-
           // Bars
           svg.selectAll("mybar")
             .data(data)
@@ -727,10 +736,6 @@ var color = d3.scaleOrdinal()
                    .append("svg")
                    .attr("width", width + margin.left + margin.right)
                    .attr("height", height + margin.top + margin.bottom);
-
-               var tooltip = d3.select("body").append("div")
-                   .attr("class", "tooltip")
-                   .style("opacity", 0);
 
                // Load in my states data!
                d3.csv("data/us-states-bar-map.csv", function(data) {
