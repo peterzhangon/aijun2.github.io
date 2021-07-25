@@ -358,9 +358,13 @@
                 .style("left",(d3.event.pageX)+"px")
                 .style("top",(d3.event.pageY)+"px")
                 .html("Item #: "+i+", state: " + d.state + ", cases: " + format_num(d.cases) + ", deaths: " + format_num(d.deaths));
+
+                d3.select(this).style('opacity', .5);
+
             })
             .on("mouseout", function() {
                d3.select(pos_tooltip).style("opacity", 0)
+               d3.select(this).style('opacity', 1);
              })
           })
 
@@ -608,6 +612,7 @@ var color = d3.scaleOrdinal()
                   tooltip.transition()
                       .duration(200)
                       .style("opacity", .9);
+                  d3.select(this).style('opacity', .5);
                   if (isCases) {
                     tooltip.html("<h4>" + d.state + "</h4><table>"
                         + "<tr><td>cases<td>" + format_num(d.cases) + "</tr></td>"
@@ -627,6 +632,7 @@ var color = d3.scaleOrdinal()
                   tooltip.transition()
                       .duration(500)
                       .style("opacity", 0);
+                  d3.select(this).style('opacity', 1);
               });
 
           })
@@ -778,6 +784,7 @@ var color = d3.scaleOrdinal()
                        tooltip.transition()
                            .duration(200)
                            .style("opacity", .9);
+                       d3.select(this).style('opacity', .5);
                        if (isCases) {
                          tooltip.html("<h4>" + d.properties.name + "</h4><table>"
                              + "<tr><td>cases<td>" + format_num(d.properties.cases) + "</tr></td>"
@@ -799,6 +806,7 @@ var color = d3.scaleOrdinal()
                        tooltip.transition()
                            .duration(500)
                            .style("opacity", 0);
+                       d3.select(this).style('opacity', 1);
                    });
                    if(isCases)
                    {
