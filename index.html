@@ -401,10 +401,10 @@
               wrap: 0,  // try something smaller to see text split in several lines
               padding: 2   // More = text lower
             },
-            x: 500,
+            x: 502,
             y: 100,
-            dy: 0,
-            dx: -200,
+            dy: 50,
+            dx: -250,
             color: ["red"],
           }
         ]
@@ -848,6 +848,35 @@ var Svg = d3.select("#legend_mul_lines")
                console.log("legend_map = " + legend_map);
                map_legent_values = split(minVal, maxVal, 9);
 
+               // begin annotation
+               // Features of the annotation
+             const annotations = [
+               {
+                 note: {
+                   label: "",
+                   title: "New York Details",
+                   wrap: 0,  // try something smaller to see text split in several lines
+                   padding: 2   // More = text lower
+                 },
+                 x: 700,
+                 y: 100,
+                 dy: -100,
+                 dx: -60,
+                 color: ["red"],
+               }
+             ]
+
+             // Add annotation to the chart
+             const makeAnnotations = d3.annotation()
+               .annotations(annotations)
+
+               if (isCases) {
+                   svg.append("g")
+                     .call(makeAnnotations)
+               }
+
+               // end annotiation
+
                  // Add one dot in the legend for each name.
                  i = 6;
                  for (i = 0; i < 1; i++) {
@@ -876,6 +905,7 @@ var Svg = d3.select("#legend_mul_lines")
                    .text(function(d, i){ return format_s(Math.trunc(map_legent_values[8 - i]))})
                    .attr("text-anchor", "left")
                    .style("alignment-baseline", "middle")
+
                  }
 
            }
