@@ -58,6 +58,9 @@
     </div>
     <script>
 
+    // http://bl.ocks.org/zanarmstrong/05c1e95bf7aa16c4768e
+    format_num = d3.format(",d")
+
     var all_colors_based_on_idx = {
       0: "#1b70fc",
       1: "#faff16",
@@ -354,7 +357,7 @@
               d3.select(pos_tooltip).style("opacity", 1)
                 .style("left",(d3.event.pageX)+"px")
                 .style("top",(d3.event.pageY)+"px")
-                .html("Item #: "+i+", state: " + d.state + ", cases: " + d.cases + ", deaths: " + d.deaths);
+                .html("Item #: "+i+", state: " + d.state + ", cases: " + format_num(d.cases) + ", deaths: " + format_num(d.deaths));
             })
             .on("mouseout", function() {
                d3.select(pos_tooltip).style("opacity", 0)
@@ -607,14 +610,14 @@ var color = d3.scaleOrdinal()
                       .style("opacity", .9);
                   if (isCases) {
                     tooltip.html("<h4>" + d.state + "</h4><table>"
-                        + "<tr><td>cases<td>" + d.cases + "</tr></td>"
+                        + "<tr><td>cases<td>" + format_num(d.cases) + "</tr></td>"
                         + "<tr><td>cass_percent<td>" + d.cases_percent + "</tr></td>")
                         .style("left", (d3.event.pageX + 5) + "px")
                         .style("top", (d3.event.pageY - 28) + "px");
                   }
                   else {
                     tooltip.html("<h4>" + d.state + "</h4><table>"
-                        + "<tr><td>deaths<td>" + d.deaths + "</tr></td>"
+                        + "<tr><td>deaths<td>" + format_num(d.deaths) + "</tr></td>"
                         + "<tr><td>deaths_percent<td>" + d.deaths_percent + "</tr></td>")
                         .style("left", (d3.event.pageX + 5) + "px")
                         .style("top", (d3.event.pageY - 28) + "px");
@@ -777,14 +780,15 @@ var color = d3.scaleOrdinal()
                            .style("opacity", .9);
                        if (isCases) {
                          tooltip.html("<h4>" + d.properties.name + "</h4><table>"
-                             + "<tr><td>cases<td>" + d.properties.cases + "</tr></td>"
+                             + "<tr><td>cases<td>" + format_num(d.properties.cases) + "</tr></td>"
                              + "<tr><td>cass_percent<td>" + d.properties.cases_percent + "</tr></td>")
                              .style("left", (d3.event.pageX + 5) + "px")
                              .style("top", (d3.event.pageY - 28) + "px");
+
                        }
                        else {
                          tooltip.html("<h4>" + d.properties.name + "</h4><table>"
-                             + "<tr><td>deaths<td>" + d.properties.deaths + "</tr></td>"
+                             + "<tr><td>deaths<td>" + format_num(d.properties.deaths) + "</tr></td>"
                              + "<tr><td>deaths_percent<td>" + d.properties.deaths_percent + "</tr></td>")
                              .style("left", (d3.event.pageX + 5) + "px")
                              .style("top", (d3.event.pageY - 28) + "px");
