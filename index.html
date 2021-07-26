@@ -460,7 +460,55 @@ var Svg = d3.select("#legend_mul_lines")
     .style("alignment-baseline", "middle")
   }
 </script>
+      <div id="mul_line_checkbox"></div>
+<script>
 
+// Add the check box to filter the lines.
+// Define margins, dimensions, and some line colors
+const margin = {top: 40, right: 120, bottom: 30, left: 40};
+const width = 200 - margin.left - margin.right;
+const height = 200 - margin.top - margin.bottom;
+const colors = ['red', 'green', 'limegreen', 'blue', 'skyblue', 'gray', 'magenta'];
+
+
+const userInput = d3.select('#mul_line_checkbox')
+  .append('div')
+  .style('width', width + margin.left + margin.right)
+  .style('height', '14em')
+  .style('display', 'flex')
+  .style('flex-flow', 'column wrap');
+
+// Load the data
+let states = [];
+d3.csv('data/us-states-bar-map.csv', d => {
+  states = d;
+  console.log(states);
+  drawUserInput();
+});
+
+function drawUserInput() {
+
+  userInput.selectAll('checkboxes')
+    .data(states).enter()
+    .append('label')
+    .style('width', '10em')
+    .html(d => d.state)
+    .append('input')
+    .attr('type', 'checkbox')
+    .property('checked', d => {
+      /*
+      if (d.show) {
+        const color = colors.shift();
+        d.color = color;
+        colors.push(color);
+      }
+      return d.show;
+      */
+      return true;
+    })
+}
+
+</script>
 
     </section>
 
