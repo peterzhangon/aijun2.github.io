@@ -25,3 +25,7 @@ h1{
   color:white;
   opacity:0;
 }
+
+.container {
+  float: left;
+}
