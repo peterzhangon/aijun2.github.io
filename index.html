@@ -60,11 +60,20 @@
 
     <!-- Create a div where the graph will take place -->
     <div id="tooltip_lines_left"></div>
-    <div id="mul_line_left"></div>
+      <g transform="translate(0, 0)">
+        <div class="container" id="mul_line_checkbox"></div>
+      </g>
+        <g transform="translate(100, 0)">
+          <svg class="container" width="900" height="1400">
+              <g id="mul_line_cases" transform="translate(0, 10)">
+              </g>
+              <g id="mul_line_deaths"  transform="translate(0, 450)">
+              </g>
+              <g id="mul_lines_legend"  transform="translate(0, 800)">
+              </g>
+          </svg>
+        </g>
 
-    <div>
-      <svg id="legend_mul_lines" height=300 width=950></svg>
-    </div>
     <script>
 
     // http://bl.ocks.org/zanarmstrong/05c1e95bf7aa16c4768e
@@ -286,18 +295,18 @@
         // TODO, tooltip not work yet
         if (isCases) {
             pos_tooltip = "#tooltip_lines_left";
-            div_pos = "#mul_line_left";
+            div_pos = "#mul_line_cases";
             char_title = "Chart-1: Trends in cases";
         } else {
             pos_tooltip = "#tooltip_lines_left";
-            div_pos = "#mul_line_left"; /// We just append
+            div_pos = "#mul_line_deaths"; /// We just append
             char_title = "Chart-2: Trends in deaths";
         }
 
         // set the dimensions and margins of the graph
         var margin = {top: 10, right: 30, bottom: 30, left: 60},
           width = 860 - margin.left - margin.right,
-          height = 300 - margin.top - margin.bottom;
+          height = 400 - margin.top - margin.bottom;
 
         // append the svg object to the body of the page
         var svg = d3.select(div_pos)
@@ -430,7 +439,9 @@
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script>
 // select the svg area
-var Svg = d3.select("#legend_mul_lines")
+
+var Svg = d3.select("#mul_lines_legend")
+
 
   // Add one dot in the legend for each name.
   i = 6;
@@ -460,21 +471,14 @@ var Svg = d3.select("#legend_mul_lines")
     .style("alignment-baseline", "middle")
   }
 </script>
-      <div id="mul_line_checkbox"></div>
 <script>
 
 // Add the check box to filter the lines.
 // Define margins, dimensions, and some line colors
-const margin = {top: 40, right: 120, bottom: 30, left: 40};
-const width = 200 - margin.left - margin.right;
-const height = 200 - margin.top - margin.bottom;
-const colors = ['red', 'green', 'limegreen', 'blue', 'skyblue', 'gray', 'magenta'];
-
-
 const userInput = d3.select('#mul_line_checkbox')
   .append('div')
-  .style('width', width + margin.left + margin.right)
-  .style('height', '14em')
+  .style('width', 100)
+  .style('height', '80em')
   .style('display', 'flex')
   .style('flex-flow', 'column wrap');
 
@@ -492,7 +496,14 @@ function drawUserInput() {
     .data(states).enter()
     .append('label')
     .style('width', '10em')
-    .html(d => d.state)
+    .html(d => {
+      if (d.state.length > 9) {
+        return d.state.substring(0,9);
+      } else {
+        return d.state;
+      }
+
+    })
     .append('input')
     .attr('type', 'checkbox')
     .property('checked', d => {
@@ -511,8 +522,6 @@ function drawUserInput() {
 </script>
 
     </section>
-
-
 
     <!-- page 2: multiple bars -->
     <!-- ************************** -->
@@ -956,13 +965,8 @@ function drawUserInput() {
                    .style("alignment-baseline", "middle")
 
                  }
-
            }
-
          );
-
-
-
        }
 
        map_func (true);
