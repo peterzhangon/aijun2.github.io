@@ -290,7 +290,7 @@
       }
 
       // public
-      function mul_lines_func (isCases) {
+      function mul_lines_func (isCases, isUpdated) {
 
         // TODO, tooltip not work yet
         if (isCases) {
@@ -431,15 +431,15 @@
         const makeAnnotations = d3.annotation()
           .annotations(annotations)
 
-          if (isCases) {
+          if (isCases && !isUpdated) {
               svg.append("g")
                 .call(makeAnnotations)
           }
 
           // end annotiation
       }
-      mul_lines_func(true)
-      mul_lines_func(false)
+      mul_lines_func(true, false);
+      mul_lines_func(false, false);
 
       </script>
       <!-- Create a div where the graph will take place -->
@@ -530,8 +530,8 @@ function drawUserInput() {
         selected_states.push(d.state);
       }
       console.log(selected_states);
-      mul_lines_func(true)
-      mul_lines_func(false)
+      mul_lines_func(true, true);
+      mul_lines_func(false, true);
      });
 }
 
