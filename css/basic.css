@@ -29,3 +29,12 @@ h1{
 .container {
   float: left;
 }
+
+.checkbox {
+    display: inline-flex;
+    cursor: pointer;
+    position: relative;
+    width: 10px;
+    height: 11px;
+    font-size:12px;
+}
