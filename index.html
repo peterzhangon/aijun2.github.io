@@ -303,6 +303,9 @@
             char_title = "Chart-2: Trends in deaths";
         }
 
+        // Remove the old one
+        d3.select(div_pos).selectAll("svg").remove();
+
         // set the dimensions and margins of the graph
         var margin = {top: 10, right: 30, bottom: 30, left: 60},
           width = 860 - margin.left - margin.right,
@@ -475,6 +478,7 @@ var Svg = d3.select("#mul_lines_legend")
     .style("alignment-baseline", "middle")
   }
 </script>
+
 <script>
 
 // Add the check box to filter the lines.
@@ -517,6 +521,18 @@ function drawUserInput() {
         return false;
       }
     })
+    .on('change', d => {
+      console.log("data: new event");
+      console.log(d);
+      if (selected_states.includes(d.state)) {
+        selected_states.pop(d.state);
+      } else {
+        selected_states.push(d.state);
+      }
+      console.log(selected_states);
+      mul_lines_func(true)
+      mul_lines_func(false)
+     });
 }
 
 </script>
