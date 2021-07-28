@@ -63,13 +63,13 @@
       <g transform="translate(0, 0)">
         <div class="container" id="mul_line_checkbox"></div>
       </g>
-        <g transform="translate(100, 0)">
+        <g transform="translate(200, 0)">
           <svg class="container" width="900" height="1400">
-              <g id="mul_line_cases" transform="translate(0, 10)">
+              <g id="mul_line_cases" transform="translate(0, 0)">
               </g>
-              <g id="mul_line_deaths"  transform="translate(0, 450)">
+              <g id="mul_line_deaths"  transform="translate(0, 350)">
               </g>
-              <g id="mul_lines_legend"  transform="translate(0, 800)">
+              <g id="mul_lines_legend"  transform="translate(0, 600)">
               </g>
           </svg>
         </g>
@@ -198,15 +198,7 @@
         "Wisconsin":                      "#59c3fa",
         "Wyoming":                        "#ca7b0a"
         };
-        var all_states = [
-          "Alabama",
-          "Alaska",
-          "Arizona",
-          "Arkansas",
-          "California",
-          "Colorado",
-          "Connecticut",
-          "Delaware"];
+
         var all_states_g1 = [
           "Alabama",
           "Alaska",
@@ -275,7 +267,15 @@
           "Wyoming"
           ];
 
+      var selected_states = [
+      "Arizona",
+      "Arkansas",
+      "California"];
+
       var state_groups = [all_states_g1, all_states_g2, all_states_g3, all_states_g4, all_states_g5, all_states_g6, all_states_g7];
+
+      // A global variable for test purpose.
+      var sumstat;
 
       // private
       function get_d_val(isCases, d) {
@@ -306,7 +306,10 @@
         // set the dimensions and margins of the graph
         var margin = {top: 10, right: 30, bottom: 30, left: 60},
           width = 860 - margin.left - margin.right,
-          height = 400 - margin.top - margin.bottom;
+          height = 300 - margin.top - margin.bottom;
+
+        // Remove the old one
+        // d3.select(pos).selectAll("svg").remove();
 
         // append the svg object to the body of the page
         var svg = d3.select(div_pos)
@@ -335,11 +338,6 @@
               d.date = parseTime(d.date);
             });
 
-          // group the data: I want to draw one line per group
-          var sumstat = d3.nest() // nest function allows to group the calculation per level of a factor
-            .key(function(d) { return d.state;})
-            .entries(data);
-
           // Add X axis --> it is a date format
           var x = d3.scaleLinear()
             .domain(d3.extent(data, function(d) { return d.date; }))
@@ -357,10 +355,17 @@
           svg.append("g")
             .call(d3.axisLeft(y));
 
-          // color palette
-          var res = sumstat.map(function(d){ return d.key }) // list of group names
+          new_data = [];
+          for (i = 0; i < data.length; i++) {
+            if (selected_states.includes(data[i].state)) {
+              new_data.push(data[i]);
+            }
+          }
 
-
+          // group the data: I want to draw one line per group
+          sumstat = d3.nest() // nest function allows to group the calculation per level of a factor
+            .key(function(d) { return d.state;})
+            .entries(new_data);
 
           // Draw the line
           svg.selectAll(".line")
@@ -442,7 +447,6 @@
 
 var Svg = d3.select("#mul_lines_legend")
 
-
   // Add one dot in the legend for each name.
   i = 6;
   for (i = 0; i < 8; i++) {
@@ -486,7 +490,7 @@ const userInput = d3.select('#mul_line_checkbox')
 let states = [];
 d3.csv('data/us-states-bar-map.csv', d => {
   states = d;
-  console.log(states);
+  //console.log(states);
   drawUserInput();
 });
 
@@ -497,32 +501,27 @@ function drawUserInput() {
     .append('label')
     .style('width', '10em')
     .html(d => {
+      return d.state;
       if (d.state.length > 9) {
         return d.state.substring(0,9);
       } else {
         return d.state;
       }
-
     })
     .append('input')
     .attr('type', 'checkbox')
     .property('checked', d => {
-      /*
-      if (d.show) {
-        const color = colors.shift();
-        d.color = color;
-        colors.push(color);
+      if (selected_states.includes(d.state)) {
+        return true;
+      } else {
+        return false;
       }
-      return d.show;
-      */
-      return true;
     })
 }
 
 </script>
 
     </section>
-
     <!-- page 2: multiple bars -->
     <!-- ************************** -->
     <section class="" id="section_mul_bars">
