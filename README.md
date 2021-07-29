@@ -98,3 +98,7 @@ https://bl.ocks.org/almsuarez/fc04cba1594938e5a10017af8a88d3af
 # container
 
 https://stackoverflow.com/questions/20141817/how-to-align-two-svgs-side-by-side-in-d3-js
+
+# d3 nest
+
+https://www.tutorialspoint.com/d3js/d3js_collections_api.htm
