@@ -479,9 +479,9 @@
         const annotations = [
           {
             note: {
-              label: "From 2020-01 to 2021-07.",
-              title: "California",
-              wrap: 0,  // try something smaller to see text split in several lines
+              label: "Click any line to know more details.",
+              title: "What happened to California",
+              wrap: 300,  // try something smaller to see text split in several lines
               padding: 2   // More = text lower
             },
             x: 502,
@@ -990,7 +990,7 @@ function drawUserInput() {
                  note: {
                    label: "",
                    title: "Click here for more info on NY",
-                   wrap: 0,  // try something smaller to see text split in several lines
+                   wrap: 400,  // try something smaller to see text split in several lines
                    padding: 2   // More = text lower
                  },
                  x: 700,
@@ -1076,6 +1076,7 @@ function drawUserInput() {
 
       <h2><br/>To be improved</h2>
       <ul>
+          <li>Use a drop list with multiple checkboxs selection in page-2, and to put all the chars and legends into a screen.</li>
           <li>Load the data only one time in onLoad().</li>
           <li>Add a background picture.</li>
       </ul>
