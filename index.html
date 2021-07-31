@@ -484,6 +484,9 @@
               wrap: 300,  // try something smaller to see text split in several lines
               padding: 2   // More = text lower
             },
+            connector: {
+              end: "arrow" // 'dot' also available
+            },
             x: 502,
             y: 100,
             dy: 50,
@@ -988,14 +991,17 @@ function drawUserInput() {
              const annotations = [
                {
                  note: {
-                   label: "",
-                   title: "Click here for more info on NY",
-                   wrap: 400,  // try something smaller to see text split in several lines
+                   label: "Click here for more info on NY",
+                   title: "",
+                   wrap: 300,  // try something smaller to see text split in several lines
                    padding: 2   // More = text lower
                  },
-                 x: 700,
-                 y: 100,
-                 dy: -100,
+                 connector: {
+                   end: "arrow" // 'dot' also available
+                 },
+                 x: 680,
+                 y: 80,
+                 dy: -70,
                  dx: -60,
                  color: ["red"],
                }
