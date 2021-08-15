@@ -86,6 +86,9 @@
 
     // http://bl.ocks.org/zanarmstrong/05c1e95bf7aa16c4768e
     format_num = d3.format(",d")
+    // Translate the date to yyyy-mm-dd
+    let date_format = d3.timeFormat("%Y-%m-%d");
+
     var tooltip = d3.select("body").append("div")
         .attr("class", "tooltip")
         .style("opacity", 0);
